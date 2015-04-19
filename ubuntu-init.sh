@@ -1,3 +1,11 @@
+###
+# Initialisation du module pour indiquer ou se trouve le fichier de config
+# ==============================================================================
+# @package olixsh
+# @module ubuntu
+# @action init
+# @author Olivier <sabinus52@gmail.com>
+##
 
 function olixmod_ubuntu_init()
 {

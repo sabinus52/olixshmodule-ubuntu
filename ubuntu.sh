@@ -8,13 +8,7 @@
 
 OLIX_MODULE_NAME="ubuntu"
 
-
-###
-# Librairies necessaires
-##
-source lib/stdin.lib.sh
-source lib/system.lib.sh
-source lib/filesystem.lib.sh
+OLIX_MODULE_UBUNTU_VERSION_RELEASE=$(lsb_release -sr)
 
 
 
@@ -26,7 +20,7 @@ olixmod_usage()
     logger_debug "module_ubuntu__olixmod_usage ()"
     stdout_printVersion
     echo
-    echo -e "Installation, configuration et gestion d'un serveur Ubuntu"
+    echo -e "Installation, configuration et gestion d'un serveur Ubuntu ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID}"
     echo
     echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}[ACTION]${CVOID}"
     echo
@@ -67,6 +61,13 @@ olixmod_main()
         core_exit 1
     fi
 
+    # Librairies necessaires
+    source lib/stdin.lib.sh
+    source lib/system.lib.sh
+    source lib/filesystem.lib.sh
+
+    logger_debug "module_ubuntu VERSION_RELEASE=${OLIX_MODULE_UBUNTU_VERSION_RELEASE}"
+    logger_info "Execution de l'action '${ACTION}' du module ${OLIX_MODULE_NAME} version ${OLIX_MODULE_UBUNTU_VERSION_RELEASE}"
     shift
     olixmod__$ACTION $@
 }
@@ -81,6 +82,27 @@ olixmod__init()
 
     source modules/ubuntu/ubuntu-init.sh
     olixmod_ubuntu_init $@
+
+    echo -e "${Cvert}Action terminée avec succès${CVOID}"
+}
+
+
+###
+# Mise à jour du système
+## 
+olixmod__update()
+{
+    logger_debug "module_ubuntu__olixmod__update ($@)"
+
+    echo -e "${CBLANC}Mise à jour du serveur Ubuntu${CVOID}"
+
+    # Test si ROOT
+    logger_info "Test si root"
+    core_checkIfRoot
+    [[ $? -ne 0 ]] && logger_error "Seulement root peut executer cette action"
+
+    source modules/ubuntu/${OLIX_MODULE_UBUNTU_VERSION_RELEASE}/apt-update.inc.sh
+    ubuntu_include_main $@
 
     echo -e "${Cvert}Action terminée avec succès${CVOID}"
 }
