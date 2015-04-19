@@ -1,0 +1,28 @@
+_olixsh_module()
+{
+    local CUR PREV
+    COMPREPLY=()
+    PREV="${COMP_WORDS[COMP_CWORD-1]}"
+
+    case "${PREV}" in    
+        ubuntu)
+            _olixsh_module_actions
+            return 0
+            ;;
+        *)  COMPREPLY=( $(compgen -W "toto titi tutu" -- ${cur}) )
+            return 0
+            ;;
+    esac
+}
+
+###
+# Liste des action du module Ubuntu
+##
+_olixsh_module_actions()
+{
+    local CUR ACTIONS
+    CUR="${COMP_WORDS[COMP_CWORD]}"
+    ACTIONS="init install config update savecfg"
+
+    COMPREPLY=( $(compgen -W "${ACTIONS}" -- ${CUR}) )
+}
