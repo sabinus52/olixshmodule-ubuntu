@@ -141,8 +141,8 @@ function module_ubuntu_linkNodeConfiguration()
 {
     logger_debug "module_ubuntu_linkNodeConfiguration ($1, $2, $3)"
     [[ ! -f $1 ]] && logger_error "Le fichier '$1' n'existe pas"
-    logger_debug "ln -sf $1 $2"
-    ln -sf $1 $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
+    logger_debug "ln -sf $(readlink -f $1) $2"
+    ln -sf $(readlink -f $1) $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
     [[ $? -ne 0 ]] && logger_error
     [[ ! -z $3 ]] && echo -e "$3 : ${CVERT}OK ...${CVOID}"
     return 0
