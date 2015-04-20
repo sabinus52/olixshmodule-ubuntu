@@ -91,3 +91,59 @@ function module_ubuntu_backupFileOriginal()
     cp ${ORIGINAL} $1 > ${OLIX_LOGGER_FILE_ERR} 2>&1
     [[ $? -ne 0 ]] && logger_error "Impossible de remettre l'original '$1'"
 }
+
+
+###
+# Installe un fichier de configuration dans son emplacement
+# @param $1 : Fichier de configuration à lier
+# @param $2 : Lien de destination
+# @param $3 : Message
+##
+function module_ubuntu_installFileConfiguration()
+{
+    logger_debug "module_ubuntu_installFileConfiguration ($1, $2, $3)"
+
+    # Si on ne choisit pas le mode par lien symbolique
+    if [[ "${OLIX_MODULE_UBUNTU_PARAMETERS__MODE_CONFIG}" == "symlink" ]]; then
+        module_ubuntu_linkNodeConfiguration "$1" "$2" "$3"
+    else
+        module_ubuntu_copyFileConfiguration "$1" "$2" "$3"
+    fi
+    return 0
+}
+
+
+###
+# Copie un fichier de configuration dans son emplacement
+# @param $1 : Fichier de configuration à lier
+# @param $2 : Lien de destination
+# @param $3 : Message
+##
+function module_ubuntu_copyFileConfiguration()
+{
+    logger_debug "install_CopyConfiguration ($1, $2, $3)"
+    [[ ! -f $1 ]] && logger_error "Le fichier '$1' n'existe pas"
+    logger_debug "cp $1 $2"
+    cp $1 $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
+    [[ $? -ne 0 ]] && logger_error
+    [[ ! -z $3 ]] && echo -e "$3 : ${CVERT}OK ...${CVOID}"
+    return 0
+}
+
+
+###
+# Crée un lien avec mon fichier de configuration
+# @param $1 : Fichier de configuration à lier
+# @param $2 : Lien de destination
+# @param $3 : Message
+##
+function module_ubuntu_linkNodeConfiguration()
+{
+    logger_debug "module_ubuntu_linkNodeConfiguration ($1, $2, $3)"
+    [[ ! -f $1 ]] && logger_error "Le fichier '$1' n'existe pas"
+    logger_debug "ln -sf $1 $2"
+    ln -sf $1 $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
+    [[ $? -ne 0 ]] && logger_error
+    [[ ! -z $3 ]] && echo -e "$3 : ${CVERT}OK ...${CVOID}"
+    return 0
+}
