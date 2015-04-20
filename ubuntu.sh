@@ -30,6 +30,7 @@ olixmod_usage()
     echo -e "${Cjaune} config  ${CVOID}  : Installation des fichiers de configuration d'un package"
     echo -e "${Cjaune} update  ${CVOID}  : Mise à jour du système"
     echo -e "${Cjaune} savecfg ${CVOID}  : Sauvegarde de la configuration actuelle"
+    echo -e "${Cjaune} help    ${CVOID}  : Affiche cet écran"
 }
 
 
@@ -65,6 +66,8 @@ olixmod_main()
     source lib/stdin.lib.sh
     source lib/system.lib.sh
     source lib/filesystem.lib.sh
+    source lib/file.lib.sh
+    source modules/ubuntu/lib.sh
 
     logger_debug "module_ubuntu VERSION_RELEASE=${OLIX_MODULE_UBUNTU_VERSION_RELEASE}"
     logger_info "Execution de l'action '${ACTION}' du module ${OLIX_MODULE_NAME} version ${OLIX_MODULE_UBUNTU_VERSION_RELEASE}"
@@ -88,8 +91,22 @@ olixmod__init()
 
 
 ###
+#
+##
+olixmod__install()
+{
+    logger_debug "module_ubuntu__olixmod__install ($@)"
+
+    source modules/ubuntu/ubuntu-install.sh
+    olixmod_ubuntu_install $@
+
+    echo -e "${Cvert}Action terminée avec succès${CVOID}"
+}
+
+
+###
 # Mise à jour du système
-## 
+##
 olixmod__update()
 {
     logger_debug "module_ubuntu__olixmod__update ($@)"
