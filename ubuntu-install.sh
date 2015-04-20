@@ -77,5 +77,6 @@ function olixmod_ubuntu_install()
     core_checkIfRoot
     [[ $? -ne 0 ]] && logger_error "Seulement root peut executer cette action"
 
-    module_ubuntu_executePackage install $1
+    module_ubuntu_executeService install $1
+    return $?
 }

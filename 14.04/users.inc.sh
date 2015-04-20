@@ -30,6 +30,25 @@ ubuntu_include_title()
 
 
 ###
+# Fonction principal
+# @param $1 : action à faire
+##
+ubuntu_include_main()
+{
+    logger_debug "ubuntu_include_main (users, $1)"
+
+    case $1 in
+        install)
+            ubuntu_include_install
+            ;;
+        config)
+            ubuntu_include_config
+            ;;
+    esac
+}
+
+
+###
 # Installation du service
 ##
 ubuntu_include_install()

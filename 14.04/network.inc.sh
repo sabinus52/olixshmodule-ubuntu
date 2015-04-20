@@ -27,6 +27,25 @@ ubuntu_include_title()
 
 
 ###
+# Fonction principal
+# @param $1 : action à faire
+##
+ubuntu_include_main()
+{
+    logger_debug "ubuntu_include_main (network, $1)"
+
+    case $1 in
+        install)
+            ubuntu_include_install
+            ;;
+        restart)
+            ubuntu_include_restart
+            ;;
+    esac
+}
+
+
+###
 # Installation du service
 ##
 ubuntu_include_install()
@@ -39,8 +58,13 @@ ubuntu_include_install()
     IP=`ifconfig eth0 | awk 'NR==2 {print $2}'| awk -F: '{print $2}'`
     echo -e "${CBLEU}${IP}${CVOID}"
 
+    if [[ ${OLIX_MODULE_UBUNTU_NETWORK__ADDRIP} == ${IP} ]]; then
+        logger_warning "Configuration du réseau déjà effectué"
+        return 1
+    fi
+
     if [[ -z ${OLIX_MODULE_UBUNTU_NETWORK__ADDRIP} ]]; then
-        echo "Pas de configuration du réseau : conservation de l'IP actuelle"
+        logger_warning "Pas de configuration du réseau : conservation de l'IP actuelle"
         return 1
     else
         echo -e "Adresse IP à modifier : ${CCYAN}${OLIX_MODULE_UBUNTU_NETWORK__ADDRIP}${CVOID}"

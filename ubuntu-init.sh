@@ -44,7 +44,7 @@ function olixmod_ubuntu_init()
         source ${FILECONF}
     fi
 
-    # Demande du fichier
+    # Demande du fichier de paramètre
     stdin_readFile "Chemin complet du fichier contenant la configuration de l'installation du serveur" "${OLIX_MODULE_UBUNTU_CONFIG}"
     logger_debug "module_ubuntu__olixmod__init RESPONSE=${OLIX_STDIN_RETURN}"
    

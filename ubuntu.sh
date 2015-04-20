@@ -100,7 +100,7 @@ olixmod__install()
     source modules/ubuntu/ubuntu-install.sh
     olixmod_ubuntu_install $@
 
-    echo -e "${Cvert}Action terminée avec succès${CVOID}"
+    [[ $? -eq 0 ]] && echo -e "${Cvert}Action terminée avec succès${CVOID}"
 }
 
 
