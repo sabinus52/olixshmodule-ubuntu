@@ -110,6 +110,8 @@ ubuntu_include_config()
         "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_MYSQL__FILECFG}" "/etc/mysql/conf.d/" \
         "Mise en place de ${CCYAN}${OLIX_MODULE_UBUNTU_MYSQL__FILECFG}${CVOID} vers /etc/mysql/conf.d"
 
+    ubuntu_include_restart
+
     # Demande du mot de passe
     stdin_readPassword "Mot de passe du serveur MYSQL en tant que root"
     MYSQL_PASSWORD=${OLIX_STDIN_RETURN}

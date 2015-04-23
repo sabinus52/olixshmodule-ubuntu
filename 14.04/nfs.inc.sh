@@ -4,7 +4,7 @@
 # - Installation des paquets NFS
 # - Installation des fichiers de configuration
 # ------------------------------------------------------------------------------
-# apache:
+# nfs:
 #    enabled: (OLIX_MODULE_UBUNTU_NFS__ENABLED)
 #    filecfg: (OLIX_MODULE_UBUNTU_NFS__FILECFG) Fichier exports à utiliser
 # ------------------------------------------------------------------------------

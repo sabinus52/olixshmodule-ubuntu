@@ -97,7 +97,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service APACHE"
     service apache2 restart
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_error "Service APACHE NOT running"
 }
 
 

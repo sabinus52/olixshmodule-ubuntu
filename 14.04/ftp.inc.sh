@@ -153,7 +153,7 @@ function ubuntu_include_ftp_users()
         logger_debug "pure-pw show ${USERNAME}"
         if pure-pw show ${USERNAME} > /dev/null 2>&1; then
             logger_debug "pure-pw usermod ${USERPARAM}"
-            pure-pw usermod ${USERPARAM} -m 2> ${OLIX_LOGGER_FILE_ERR}
+            pure-pw usermod ${USERNAME} ${USERPARAM} -m 2> ${OLIX_LOGGER_FILE_ERR}
             [[ $? -ne 0 ]] && logger_error
             echo -e "Création de l'utilisateur ${CCYAN}${USERNAME}${CVOID} : ${CBLEU}Déjà créé ...${CVOID}"
         else
