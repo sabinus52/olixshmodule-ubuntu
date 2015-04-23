@@ -51,6 +51,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -91,4 +94,15 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service NFS"
     service nfs-kernel-server restart
     [[ $? -ne 0 ]] && logger_error "Service NFS NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (nfs)"
+
+    module_ubuntu_backupFileConfiguration "/etc/exports" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_NFS__FILECFG}"
 }

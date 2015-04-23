@@ -43,6 +43,9 @@ ubuntu_include_main()
         config)
             ubuntu_include_config
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -80,4 +83,16 @@ ubuntu_include_config()
         module_ubuntu_installFileConfiguration "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}" "/etc/logrotate.d/" \
             "Mise en place de ${CCYAN}${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}${CVOID} vers /etc/logrotate.d"
     fi
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (tools)"
+
+    module_ubuntu_backupFileConfiguration "/etc/cron.d/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}"
+    module_ubuntu_backupFileConfiguration "/etc/logrotate.d/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}"
 }

@@ -62,6 +62,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -134,6 +137,17 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service MYSQL"
     service mysql restart
     [[ $? -ne 0 ]] && logger_error "Service MYSQL NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (mysql)"
+
+    module_ubuntu_backupFileConfiguration "/etc/mysql/conf.d/${OLIX_MODULE_UBUNTU_MYSQL__FILECFG}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_MYSQL__FILECFG}"
 }
 
 

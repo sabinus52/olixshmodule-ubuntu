@@ -60,6 +60,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -116,6 +119,19 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service FTP"
     service pure-ftpd restart
     [[ $? -ne 0 ]] && logger_error "Service FTP NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (ftp)"
+
+    for I in ${OLIX_MODULE_UBUNTU_FTP__CONFIGS}; do
+        module_ubuntu_backupFileConfiguration "/etc/pure-ftpd/conf/${I}" "${__PATH_CONFIG}/${I}"
+    done
 }
 
 

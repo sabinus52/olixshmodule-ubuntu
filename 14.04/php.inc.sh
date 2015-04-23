@@ -52,6 +52,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -92,4 +95,15 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service APACHE"
     service apache2 restart
     [[ $? -ne 0 ]] && logger_error "Service APACHE NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (php)"
+
+    module_ubuntu_backupFileConfiguration "/etc/php5/apache2/conf.d/${OLIX_MODULE_UBUNTU_PHP__FILECFG}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_PHP__FILECFG}"
 }

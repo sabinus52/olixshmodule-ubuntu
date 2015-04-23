@@ -51,6 +51,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -91,4 +94,15 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service SNMPD"
     service snmpd restart
     [[ $? -ne 0 ]] && logger_error "Service SNMPD NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (snmpd)"
+
+    module_ubuntu_backupFileConfiguration "/etc/snmp/snmpd.conf" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_SNMPD__FILECFG}"
 }

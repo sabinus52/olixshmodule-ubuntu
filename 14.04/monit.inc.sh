@@ -51,6 +51,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -96,4 +99,17 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service MONIT"
     service monit restart
     [[ $? -ne 0 ]] && logger_error "Service MONIT NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (monit)"
+
+    for I in ${OLIX_MODULE_UBUNTU_MONIT__CONFD}; do
+        module_ubuntu_backupFileConfiguration "/etc/monit/conf.d/${I}" "${__PATH_CONFIG}/${I}"
+    done
 }

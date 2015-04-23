@@ -53,6 +53,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -108,4 +111,21 @@ ubuntu_include_config()
 ubuntu_include_restart()
 {
     logger_debug "ubuntu_include_restart (logwatch)"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (logwatch)"
+
+    module_ubuntu_backupFileConfiguration "/etc/logwatch/conf/logwatch.conf" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_LOGWATCH__FILECFG}"
+    for I in ${OLIX_MODULE_UBUNTU_LOGWATCH__LOGFILES}; do
+        module_ubuntu_backupFileConfiguration "/etc/logwatch/conf/logfiles/${I}" "${__PATH_CONFIG}/logfiles/${I}"
+    done
+    for I in ${OLIX_MODULE_UBUNTU_LOGWATCH__SERVICES}; do
+        module_ubuntu_backupFileConfiguration "/etc/logwatch/conf/services/${I}" "${__PATH_CONFIG}/services/${I}"
+    done
 }

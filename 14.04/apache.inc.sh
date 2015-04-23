@@ -55,6 +55,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -98,6 +101,20 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service APACHE"
     service apache2 restart
     [[ $? -ne 0 ]] && logger_error "Service APACHE NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (apache)"
+
+    for I in ${OLIX_MODULE_UBUNTU_APACHE__CONFIGS}; do
+        module_ubuntu_backupFileConfiguration "/etc/apache2/conf-available/$I.conf" "${__PATH_CONFIG}/conf/$I.conf"
+    done
+    module_ubuntu_backupFileConfiguration "/etc/apache2/sites-available/000-default.conf" "${__PATH_CONFIG}/default/${OLIX_MODULE_UBUNTU_APACHE__DEFAULT}"
 }
 
 

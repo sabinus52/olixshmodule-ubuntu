@@ -138,3 +138,17 @@ function ubuntu_action__update()
 
     echo -e "${Cvert}Action terminée avec succès${CVOID}"
 }
+
+
+###
+# Sauvegarde de la configuration des différents services
+##
+function ubuntu_action__savecfg()
+{
+    logger_debug "ubuntu_action__savecfg ($@)"
+
+    source modules/ubuntu/ubuntu-savecfg.sh
+    ubuntu_savecfg__main $@
+
+    [[ $? -eq 0 ]] && echo -e "${Cvert}Action terminée avec succès${CVOID}"
+}

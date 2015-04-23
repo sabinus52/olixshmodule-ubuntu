@@ -57,6 +57,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -100,6 +103,17 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service SAMBA"
     service smbd restart
     [[ $? -ne 0 ]] && logger_error "Service SAMBA NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (samba)"
+
+    module_ubuntu_backupFileConfiguration "/etc/samba/smb.conf" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_SAMBA__FILECFG}"
 }
 
 

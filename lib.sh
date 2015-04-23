@@ -148,3 +148,29 @@ function module_ubuntu_linkNodeConfiguration()
     [[ ! -z $3 ]] && echo -e "$3 : ${CVERT}OK ...${CVOID}"
     return 0
 }
+
+
+###
+# Sauvegarde d'un fichier de configuration dans son emplacement d'origine
+# @param $1 : Fichier de configuration à sauvegarder
+# @param $2 : Fichier ou dossier d'origine
+##
+function module_ubuntu_backupFileConfiguration()
+{
+    logger_debug "module_ubuntu_backupFileConfiguration ($1, $2)"
+    [[ ! -f $1 ]] && logger_error "Le fichier '$1' n'existe pas"
+    if [[ -L $1 ]]; then
+        logger_warning "Sauvegarde inutile $1 : lien symbolique"
+        return 0
+    fi
+    logger_debug "cp $1 $2"
+    cp $1 $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
+    [[ $? -ne 0 ]] && logger_error
+    local OWNER=$(stat -c %U ${OLIX_MODULE_UBUNTU_CONFIG})
+    local GROUP=$(stat -c %G ${OLIX_MODULE_UBUNTU_CONFIG})
+    logger_debug "chown -R ${OWNER}.${GROUP} $2"
+    chown -R ${OWNER}.${GROUP} $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
+    [[ $? -ne 0 ]] && logger_error
+    echo -e "Sauvegarde de $1 : ${CVERT}OK ...${CVOID}"
+    return 0
+}

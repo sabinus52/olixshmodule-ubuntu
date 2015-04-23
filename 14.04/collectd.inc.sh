@@ -52,6 +52,9 @@ ubuntu_include_main()
         restart)
             ubuntu_include_restart
             ;;
+        savecfg)
+            ubuntu_include_savecfg
+            ;;
     esac
 }
 
@@ -96,6 +99,20 @@ ubuntu_include_restart()
     logger_info "Redémarrage du service COLLECTD"
     service collectd restart
     [[ $? -ne 0 ]] && logger_error "Service COLLECTD NOT running"
+}
+
+
+###
+# Sauvegarde de la configuration
+##
+ubuntu_include_savecfg()
+{
+    logger_debug "ubuntu_include_savecfg (collectd)"
+
+    for I in ${OLIX_MODULE_UBUNTU_COLLECTD__PLUGINS}; do
+        module_ubuntu_backupFileConfiguration "/etc/collectd/collectd.conf.d/$I.conf" "${__PATH_CONFIG}/$I.conf"
+    done
+   
 }
 
 
