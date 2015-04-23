@@ -7,9 +7,9 @@
 # @author Olivier <sabinus52@gmail.com>
 ##
 
-function olixmod_ubuntu_init()
+function ubuntu_init__main()
 {
-    logger_debug "module_ubuntu__olixmod_ubuntu_init ($@)"
+    logger_debug "ubuntu_init__main ($@)"
 
     local FORCE=false
     while [[ $# -ge 1 ]]; do

@@ -15,9 +15,9 @@ OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network virtualbox vmware users apache php 
 ###
 # Usage de la commande
 ##
-olixmod_ubuntu_install_usage()
+ubuntu_install__usage()
 {
-    logger_debug "module_ubuntu__olixmod_ubuntu_install_usage ()"
+    logger_debug "ubuntu_install__usage ()"
     stdout_printVersion
     echo
     echo -e "Installation d'un serveur Ubuntu ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID} et ses packages"
@@ -52,13 +52,13 @@ olixmod_ubuntu_install_usage()
 # Fonction principale
 # @param $1 : package ou option (--all|-a)
 ##
-function olixmod_ubuntu_install()
+function ubuntu_install__main()
 {
-    logger_debug "module_ubuntu__olixmod_ubuntu_install ($@)"
+    logger_debug "ubuntu_install__main ($@)"
 
     # Affichage de l'aide
-    [ $# -lt 1 ] && olixmod_ubuntu_install_usage && core_exit 1
-    [[ "$1" == "help" ]] && olixmod_ubuntu_install_usage && core_exit 0
+    [ $# -lt 1 ] && ubuntu_install__usage && core_exit 1
+    [[ "$1" == "help" ]] && ubuntu_install__usage && core_exit 0
 
     # Vérification de la saisie du nom du package
     logger_info "Vérification de la saisie du nom du package '$1'"
