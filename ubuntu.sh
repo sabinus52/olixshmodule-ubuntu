@@ -107,6 +107,20 @@ function ubuntu_action__install()
 
 
 ###
+# Configuration des différents services
+##
+function ubuntu_action__config()
+{
+    logger_debug "ubuntu_action__config ($@)"
+
+    source modules/ubuntu/ubuntu-config.sh
+    ubuntu_config__main $@
+
+    [[ $? -eq 0 ]] && echo -e "${Cvert}Action terminée avec succès${CVOID}"
+}
+
+
+###
 # Mise à jour du système
 ##
 function ubuntu_action__update()

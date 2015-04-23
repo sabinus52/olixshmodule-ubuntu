@@ -28,6 +28,10 @@ _olixsh_module()
             _olixsh_module_install_packages
             return 0
             ;;
+        config)
+            _olixsh_module_config_packages
+            return 0
+            ;;
     esac
 }
 
@@ -46,7 +50,7 @@ _olixsh_module_actions()
 
 
 ###
-# Liste des packages de l'action INSTALL du module Ubuntu
+# Liste des packages de l'action INIT du module Ubuntu
 ##
 _olixsh_module_init()
 {
@@ -65,6 +69,19 @@ _olixsh_module_install_packages()
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
     PACKAGES="--all network users virtualbox vmware apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+
+    COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
+}
+
+
+###
+# Liste des packages de l'action CONFIG du module Ubuntu
+##
+_olixsh_module_config_packages()
+{
+    local CUR PACKAGES
+    CUR="${COMP_WORDS[COMP_CWORD]}"
+    PACKAGES="apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
 }
