@@ -82,6 +82,7 @@ function olixmod_ubuntu_install()
 
     if [[ $COMPLETE == true ]]; then
         # Installation complete
+        module_ubuntu_executeService main apt-update with-title
         for I in ${OLIX_MODULE_UBUNTU_PACKAGES_INSTALL}; do
             logger_info "Installation de '${I}'"
             module_ubuntu_executeService install ${I} with-title

@@ -11,6 +11,17 @@
 ##
 
 
+ubuntu_include_title()
+{
+    echo
+    echo -e "${CBLANC} Mise à jour du système ${CVOID}"
+    echo -e "-------------------------------------------------------------------------------"
+}
+
+
+###
+# Mise à jour
+##
 ubuntu_include_main()
 {
     logger_info "Mise à jour des dépôts"
