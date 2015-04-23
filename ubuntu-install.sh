@@ -9,7 +9,7 @@
 
 
 
-OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network users virtualbox vmware apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
+OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network virtualbox vmware users apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
 
 
 ###
@@ -62,7 +62,10 @@ function olixmod_ubuntu_install()
 
     # Vérification de la saisie du nom du package
     logger_info "Vérification de la saisie du nom du package '$1'"
-    if ! $(core_contains $1 "${OLIX_MODULE_UBUNTU_PACKAGES_INSTALL}"); then
+    local COMPLETE=false
+    if [[ "$1" == "--all" || "$1" == "-a" ]]; then
+        COMPLETE=true
+    elif ! $(core_contains $1 "${OLIX_MODULE_UBUNTU_PACKAGES_INSTALL}"); then
         logger_error "Apparement le package '$1' est inconnu !"
     fi
 
@@ -77,6 +80,26 @@ function olixmod_ubuntu_install()
     core_checkIfRoot
     [[ $? -ne 0 ]] && logger_error "Seulement root peut executer cette action"
 
-    module_ubuntu_executeService install $1
-    return $?
+    if [[ $COMPLETE == true ]]; then
+        # Installation complete
+        for I in ${OLIX_MODULE_UBUNTU_PACKAGES_INSTALL}; do
+            logger_info "Installation de '${I}'"
+            module_ubuntu_executeService install ${I} with-title
+        done
+    else
+        # Installation des services demandés
+        for I in $@; do
+            logger_info "Installation de '${I}'"
+            if ! $(core_contains ${I} "${OLIX_MODULE_UBUNTU_PACKAGES_INSTALL}"); then
+                logger_warning "Apparement le package '${I}' est inconnu !"
+            else
+                if [[ $# == 1 ]]; then
+                    module_ubuntu_executeService install ${I}
+                else
+                    module_ubuntu_executeService install ${I} with-title
+                fi
+            fi
+        done
+        return $?
+    fi
 }

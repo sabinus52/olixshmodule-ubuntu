@@ -64,7 +64,7 @@ _olixsh_module_install_packages()
 {
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    PACKAGES="network users virtualbox vmware apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+    PACKAGES="--all network users virtualbox vmware apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
 }

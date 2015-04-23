@@ -49,7 +49,7 @@ function module_ubuntu_loadConfigFileParams()
 ##
 function module_ubuntu_executeService()
 {
-    logger_debug "module_ubuntu_executeService ($1, $2)"
+    logger_debug "module_ubuntu_executeService ($1, $2, $3)"
     local FILEEXEC=${OLIX_MODULE_DIR}/${OLIX_MODULE_NAME}/${OLIX_MODULE_UBUNTU_VERSION_RELEASE}/$2.inc.sh
 
     logger_info "Chargement du fichier '$2.inc.sh' pour l'exécution de la tâche"
@@ -62,6 +62,7 @@ function module_ubuntu_executeService()
         logger_warning "Pas de tâche '$1' pour le service '$2'"
         return 1
     else
+        [[ "$3" == "with-title" ]] && ubuntu_include_title
         ubuntu_include_main $1
         return $?
     fi

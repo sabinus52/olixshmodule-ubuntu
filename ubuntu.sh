@@ -1,6 +1,8 @@
 ###
 # Module d'installation et de configuration d'un serveur Ubuntu
 # ==============================================================================
+# OLIX_MODULE_UBUNTU_CONFIG : Emplacement du fichier de configuration des paramètres
+# ------------------------------------------------------------------------------
 # @package olixsh
 # @module ubuntu
 # @author Olivier <sabinus52@gmail.com>
