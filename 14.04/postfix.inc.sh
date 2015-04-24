@@ -88,8 +88,8 @@ ubuntu_include_config()
 
     # Changement du relais
     logger_info "Changement du relais SMTP"
-    logger_debug "relayhost = ${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:{OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}"
-    postconf -e "relayhost = ${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:{OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}"
+    logger_debug "relayhost = ${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}"
+    postconf -e "relayhost = ${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}"
 
     # Authentification
     if [[ ! -z ${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__LOGIN} ]]; then
@@ -131,11 +131,11 @@ function ubuntu_include_postfix_authentification()
         stdin_readPassword "Mot de passe au serveur SMTP ${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST} en tant que ${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__LOGIN}"
         OLIX_MODULE_UBUNTU_POSTFIX__AUTH__PASSWORD=${OLIX_STDIN_RETURN}
     fi
-    logger_debug "${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:{OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}    ${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__LOGIN}:${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__PASSWORD} > /etc/postfix/sasl_passwd"
-    echo "${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:{OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}    ${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__LOGIN}:${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__PASSWORD}" > /etc/postfix/sasl_passwd
+    logger_debug "${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}    ${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__LOGIN}:${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__PASSWORD} > /etc/postfix/sasl_passwd"
+    echo "${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}    ${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__LOGIN}:${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__PASSWORD}" > /etc/postfix/sasl_passwd
     logger_debug "postmap /etc/postfix/sasl_passwd"
     postmap /etc/postfix/sasl_passwd > ${OLIX_LOGGER_FILE_ERR} 2>&1
     [[ $? -ne 0 ]] && logger_error
     rm -f /etc/postfix/sasl_passwd
-    echo -e "Authentification sur ${CCYAN}${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:{OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}${CVOID} : ${CVERT}OK ...${CVOID}"
+    echo -e "Authentification sur ${CCYAN}${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}${CVOID} : ${CVERT}OK ...${CVOID}"
 }
