@@ -1,5 +1,5 @@
 ###
-# Librairie du module UBUNTU
+# Librairies de la gestion des serveurs d'Ubuntu
 # ==============================================================================
 # @package olixsh
 # @module ubuntu
@@ -9,36 +9,20 @@
 
 
 ###
-# Vérifie si la configuration du module a été effectuée et la charge
-## 
-function module_ubuntu_loadConfig()
-{
-    logger_debug "module_ubuntu_loadConfig ()"
-
-    logger_info "Test si la configuration est déjà effectuée"
-    if ! config_isModuleExist ${OLIX_MODULE_NAME}; then
-        logger_error "Pour reinitialiser la configuration, utiliser : ${OLIX_CORE_SHELL_NAME} ubuntu init"    
-    fi
-
-    local FILECONF=$(config_getFilenameModule ${OLIX_MODULE_NAME})
-    logger_info "Charge le fichier de configuration ${FILECONF}"
-    source ${FILECONF}
-}
-
-
-###
-# Charge le fichier de configuration contenant les paramètes necessaires à l'installation et la configuration du serveur
+# Vérifie et charge le fichier de conf de la configuration du serveur
 ##
-function module_ubuntu_loadConfigFileParams()
+function module_ubuntu_loadConfiguration()
 {
-    logger_debug "module_ubuntu_loadConfigFileParams ()"
+    logger_debug "module_ubuntu_loadConfiguration ()"
+    local FILECFG="${OLIX_MODULE_UBUNTU_CONFIG}"
 
-    logger_info "Test si le fichier de configuration des paramètres existe"
-    logger_debug "module_ubuntu OLIX_MODULE_UBUNTU_CONFIG=${OLIX_MODULE_UBUNTU_CONFIG}"
-    if [[ ! -r ${OLIX_MODULE_UBUNTU_CONFIG} ]]; then
-        logger_error "Le fichier '${OLIX_MODULE_UBUNTU_CONFIG}' est absent"
+    if [[ ! -r ${FILECFG} ]]; then
+        logger_warning "${FILECFG} absent"
+        logger_error "Impossible de charger le fichier de configuration du serveur"
     fi
-    eval $(file_parseYaml ${OLIX_MODULE_UBUNTU_CONFIG} "OLIX_MODULE_UBUNTU_")
+
+    logger_info "Chargement du fichier '${FILECFG}'"
+    yaml_parseFile "${FILECFG}" "OLIX_MODULE_UBUNTU_"
 }
 
 
@@ -106,45 +90,10 @@ function module_ubuntu_installFileConfiguration()
 
     # Si on ne choisit pas le mode par lien symbolique
     if [[ "${OLIX_MODULE_UBUNTU_PARAMETERS__MODE_CONFIG}" == "symlink" ]]; then
-        module_ubuntu_linkNodeConfiguration "$1" "$2" "$3"
+        filesystem_linkNodeConfiguration "$1" "$2"
     else
-        module_ubuntu_copyFileConfiguration "$1" "$2" "$3"
+        filesystem_copyFileConfiguration "$1" "$2"
     fi
-    return 0
-}
-
-
-###
-# Copie un fichier de configuration dans son emplacement
-# @param $1 : Fichier de configuration à lier
-# @param $2 : Lien de destination
-# @param $3 : Message
-##
-function module_ubuntu_copyFileConfiguration()
-{
-    logger_debug "install_CopyConfiguration ($1, $2, $3)"
-    [[ ! -f $1 ]] && logger_error "Le fichier '$1' n'existe pas"
-    logger_debug "cp $1 $2"
-    cp $1 $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
-    [[ ! -z $3 ]] && echo -e "$3 : ${CVERT}OK ...${CVOID}"
-    return 0
-}
-
-
-###
-# Crée un lien avec mon fichier de configuration
-# @param $1 : Fichier de configuration à lier
-# @param $2 : Lien de destination
-# @param $3 : Message
-##
-function module_ubuntu_linkNodeConfiguration()
-{
-    logger_debug "module_ubuntu_linkNodeConfiguration ($1, $2, $3)"
-    [[ ! -f $1 ]] && logger_error "Le fichier '$1' n'existe pas"
-    logger_debug "ln -sf $(readlink -f $1) $2"
-    ln -sf $(readlink -f $1) $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
     [[ ! -z $3 ]] && echo -e "$3 : ${CVERT}OK ...${CVOID}"
     return 0
 }
