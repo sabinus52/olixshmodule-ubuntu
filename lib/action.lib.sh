@@ -53,18 +53,14 @@ function module_ubuntu_action_install()
     [[ ${OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE} == true ]] && OLIX_MODULE_UBUNTU_PACKAGES=${OLIX_MODULE_UBUNTU_PACKAGES_INSTALL}
 
     # Mise à jour si installation complète
-    [[ ${OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE} == true ]] && module_ubuntu_executeService main apt-update with-title
+    [[ ${OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE} == true ]] && module_ubuntu_executeService main apt-update
 
     for I in ${OLIX_MODULE_UBUNTU_PACKAGES}; do
         logger_info "Installation de '${I}'"
         if ! $(core_contains ${I} "${OLIX_MODULE_UBUNTU_PACKAGES_INSTALL}"); then
             logger_warning "Apparement le package '${I}' est inconnu !"
         else
-            if [[ $# == 1 ]]; then
-                module_ubuntu_executeService install ${I}
-            else
-                module_ubuntu_executeService install ${I} with-title
-            fi
+            module_ubuntu_executeService install ${I}
         fi
     done
 
@@ -82,6 +78,7 @@ function module_ubuntu_action_config()
 
     # Affichage de l'aide
     [ $# -lt 1 ] && module_ubuntu_usage_config && core_exit 1
+    [[ ${OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE} == true ]]  && module_ubuntu_usage_config && core_exit 1
 
     # Test si ROOT
     logger_info "Test si root"
@@ -97,11 +94,7 @@ function module_ubuntu_action_config()
         if ! $(core_contains ${I} "${OLIX_MODULE_UBUNTU_PACKAGES_CONFIG}"); then
             logger_warning "Apparement le package '${I}' est inconnu !"
         else
-            if [[ $# == 1 ]]; then
-                module_ubuntu_executeService config ${I}
-            else
-                module_ubuntu_executeService config ${I} with-title
-            fi
+            module_ubuntu_executeService config ${I}
         fi
     done
 
@@ -115,8 +108,6 @@ function module_ubuntu_action_config()
 function module_ubuntu_action_update()
 {
     logger_debug "module_ubuntu_action_update ($@)"
-
-    echo -e "${CBLANC}Mise à jour du serveur Ubuntu${CVOID}"
 
     # Test si ROOT
     logger_info "Test si root"
@@ -155,11 +146,7 @@ function module_ubuntu_action_savecfg()
         if ! $(core_contains ${I} "${OLIX_MODULE_UBUNTU_PACKAGES_SAVECFG}"); then
             logger_warning "Apparement le package '${I}' est inconnu !"
         else
-            if [[ $# == 1 ]]; then
-                module_ubuntu_executeService savecfg ${I}
-            else
-                module_ubuntu_executeService savecfg ${I} with-title
-            fi
+            module_ubuntu_executeService savecfg ${I}
         fi
     done
 

@@ -74,7 +74,7 @@ ubuntu_include_config()
 
     # Installation des fichiers CRONTAB
     if [ -n "${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" ]; then
-        module_ubuntu_copyFileConfiguration "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" "/etc/cron.d/" \
+        module_ubuntu_installFileConfiguration "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" "/etc/cron.d/" \
             "Mise en place de ${CCYAN}${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}${CVOID} vers /etc/cron.d"
     fi
 
