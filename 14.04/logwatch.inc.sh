@@ -86,7 +86,7 @@ ubuntu_include_config()
     # Mise en place du fichier de configuration de "logfiles"
     logger_info "Effacement des fichiers déjà présents dans /etc/logwatch/conf/logfiles"
     rm -f /etc/logwatch/conf/logfiles/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_error
     logger_info "Mise en place des fichiers dans /etc/logwatch/conf/logfiles"
     for I in ${OLIX_MODULE_UBUNTU_LOGWATCH__LOGFILES}; do
         module_ubuntu_installFileConfiguration "${__PATH_CONFIG}/logfiles/${I}" "/etc/logwatch/conf/logfiles/" \
@@ -96,7 +96,7 @@ ubuntu_include_config()
     # Mise en place du fichier de configuration de "services"
     logger_info "Effacement des fichiers déjà présents dans /etc/logwatch/conf/services"
     rm -f /etc/logwatch/conf/services/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_error
     logger_info "Mise en place des fichiers dans /etc/logwatch/conf/logfiles"
     for I in ${OLIX_MODULE_UBUNTU_LOGWATCH__SERVICES}; do
         module_ubuntu_installFileConfiguration "${__PATH_CONFIG}/services/${I}" "/etc/logwatch/conf/services/" \
