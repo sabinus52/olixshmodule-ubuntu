@@ -11,9 +11,9 @@ OLIX_MODULE_NAME="ubuntu"
 OLIX_MODULE_UBUNTU_VERSION_RELEASE=$(lsb_release -sr)
 
 OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE=false
-OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network virtualbox vmware users apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
-OLIX_MODULE_UBUNTU_PACKAGES_CONFIG="apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
-OLIX_MODULE_UBUNTU_PACKAGES_SAVECFG="apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
+OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network virtualbox vmware users apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
+OLIX_MODULE_UBUNTU_PACKAGES_CONFIG="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
+OLIX_MODULE_UBUNTU_PACKAGES_SAVECFG="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
 
 
 ###

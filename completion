@@ -72,7 +72,7 @@ _olixsh_module_install_packages()
 {
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    PACKAGES="--all network users virtualbox vmware apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+    PACKAGES="--all network users virtualbox vmware apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
 }
@@ -85,7 +85,7 @@ _olixsh_module_config_packages()
 {
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    PACKAGES="apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+    PACKAGES="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
 }
@@ -98,7 +98,7 @@ _olixsh_module_savecfg_packages()
 {
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    PACKAGES="--all apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+    PACKAGES="--all apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
 }
