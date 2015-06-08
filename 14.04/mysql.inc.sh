@@ -171,7 +171,7 @@ function ubuntu_include_mysql_path()
         [[ $? -ne 0 ]] && logger_error
     fi
     logger_debug "chown -R mysql.mysql ${MYSQL_PATH}"
-    chown -R mysql:mysql /home/mysql > ${OLIX_LOGGER_FILE_ERR} 2>&1
+    chown -R mysql:mysql ${MYSQL_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
     [[ $? -ne 0 ]] && logger_error
     logger_debug "cp -rp /var/lib/mysql/ ${MYSQL_PATH}"
     cp -rp /var/lib/mysql/* ${MYSQL_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
