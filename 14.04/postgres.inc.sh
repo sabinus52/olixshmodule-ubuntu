@@ -116,12 +116,18 @@ ubuntu_include_config()
         module_ubuntu_installFileConfiguration \
             "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_POSTGRES__FILECFG}" "/etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf" \
             "Mise en place de ${CCYAN}${OLIX_MODULE_UBUNTU_POSTGRES__FILECFG}${CVOID} vers /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf"
+        logger_debug "chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf"
+        chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
+        [[ $? -ne 0 ]] && logger_error
     fi
     if [[ -n "${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}" ]]; then
         module_ubuntu_backupFileOriginal "/etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf"
         module_ubuntu_installFileConfiguration \
             "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}" "/etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf" \
             "Mise en place de ${CCYAN}${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}${CVOID} vers /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf"
+        logger_debug "chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf"
+        chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
+        [[ $? -ne 0 ]] && logger_error
     fi
 }
 
