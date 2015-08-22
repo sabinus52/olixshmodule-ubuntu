@@ -26,6 +26,7 @@ function module_ubuntu_usage_main()
     echo -e "${Cjaune} config  ${CVOID}  : Installation des fichiers de configuration d'un package"
     echo -e "${Cjaune} update  ${CVOID}  : Mise à jour du système"
     echo -e "${Cjaune} savecfg ${CVOID}  : Sauvegarde de la configuration actuelle"
+    echo -e "${Cjaune} synccfg ${CVOID}  : Synchronisation de la configuration actuelle vers un autre serveur"
     echo -e "${Cjaune} help    ${CVOID}  : Affiche cet écran"
 }
 
@@ -131,6 +132,25 @@ function module_ubuntu_usage_savecfg()
 
 
 ###
+# Usage de l'action SUNCCFG
+##
+function module_ubuntu_usage_synccfg()
+{
+    logger_debug "module_ubuntu_usage_synccfg ()"
+    stdout_printVersion
+    echo
+    echo -e "Synchronisation de la configuration des services avec un autre serveur ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID}"
+    echo
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}action [ADDRESS SERVER] [OPTIONS]${CVOID}"
+    echo
+    echo -e "${CJAUNE}Liste des ACTIONS disponibles${CVOID} :"
+    echo -e "${Cjaune} push       ${CVOID} : Pousse la configuration vers au autre serveur"
+    echo -e "${Cjaune} pull       ${CVOID} : Récupère la configuration depuis un autre serveur"
+    echo -e "${Cjaune} help       ${CVOID} : Affiche cet écran"
+}
+
+
+###
 # Retourne les paramètres de la commandes en fonction des options
 # @param $@ : Liste des paramètres
 ##
@@ -143,6 +163,10 @@ function module_ubuntu_usage_getParams()
         case $1 in
             --all)
                 OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE=true
+                ;;
+            --port)
+                IFS='=' read -ra PARAM <<< "$1"
+                OLIX_MODULE_UBUNTU_SYNC_PORT=${PARAM[1]}
                 ;;
             *)
                 OLIX_MODULE_UBUNTU_PACKAGES="${OLIX_MODULE_UBUNTU_PACKAGES} $1"

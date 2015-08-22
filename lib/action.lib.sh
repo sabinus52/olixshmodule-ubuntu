@@ -162,3 +162,37 @@ function module_ubuntu_action_savecfg()
 
     echo -e "${Cvert}Action terminée avec succès${CVOID}"
 }
+
+
+###
+# Synchronisation de la configuration des packages
+##
+function module_ubuntu_action_synccfg()
+{
+    logger_debug "module_ubuntu_action_synccfg ($@)"
+    local ACTION=$1
+    local ADDRESS=$2
+
+    # Affichage de l'aide
+    [ $# -lt 1 ] && module_ubuntu_usage_synccfg && core_exit 1
+
+    # Test si ROOT
+    #logger_info "Test si root"
+    #core_checkIfRoot
+    #[[ $? -ne 0 ]] && logger_error "Seulement root peut executer cette action"
+
+    # Charge le fichier de configuration contenant les paramètes necessaires à l'installation
+    #module_ubuntu_loadConfiguration
+    
+    case ${ACTION} in
+        push)
+            echo "Pousser la config"
+            ;;
+        pull)
+            echo "Tirer la config"
+            ;;
+    esac
+    
+
+    echo -e "${Cvert}Action terminée avec succès${CVOID}"
+}
