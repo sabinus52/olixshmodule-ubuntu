@@ -164,7 +164,7 @@ function module_ubuntu_usage_getParams()
             --all)
                 OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE=true
                 ;;
-            --port)
+            --port=*)
                 IFS='=' read -ra PARAM <<< "$1"
                 OLIX_MODULE_UBUNTU_SYNC_PORT=${PARAM[1]}
                 ;;

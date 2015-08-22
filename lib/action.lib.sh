@@ -172,6 +172,7 @@ function module_ubuntu_action_synccfg()
     logger_debug "module_ubuntu_action_synccfg ($@)"
     local ACTION=$1
     local ADDRESS=$2
+    local CONFIGDIR=$3
 
     # Affichage de l'aide
     [ $# -lt 1 ] && module_ubuntu_usage_synccfg && core_exit 1
@@ -184,15 +185,49 @@ function module_ubuntu_action_synccfg()
     # Charge le fichier de configuration contenant les paramètes necessaires à l'installation
     #module_ubuntu_loadConfiguration
     
+    [[ -z ${ADDRESS} ]] && ADDRESS=${OLIX_MODULE_UBUNTU_SYNC_SERVER}
+    if [[ -z ${ADDRESS} ]]; then
+        logger_critical "Le paramètre de l'adresse du serveur est manquant"
+    fi
+    [[ -z ${CONFIGDIR} ]] && CONFIGDIR=$(dirname ${OLIX_MODULE_UBUNTU_CONFIG} 2> /dev/null)
+    if [[ -z ${CONFIGDIR} ]]; then
+        logger_critical "Le paramètre du dossier contenant la configuration du serveur"
+    fi
+    [[ -z ${OLIX_MODULE_UBUNTU_SYNC_PORT} ]] && OLIX_MODULE_UBUNTU_SYNC_PORT=22
+    logger_debug "ADDRESS=${ADDRESS}"
+    logger_debug "CONFIGDIR=${CONFIGDIR}"
+    logger_debug "OLIX_MODULE_UBUNTU_SYNC_PORT=${OLIX_MODULE_UBUNTU_SYNC_PORT}"
+    
     case ${ACTION} in
         push)
             echo "Pousser la config"
             ;;
         pull)
-            echo "Tirer la config"
+            module_ubuntu_action_synccfg_pull "${ADDRESS}" "${CONFIGDIR}"
             ;;
     esac
     
+    case $? in
+        0) echo -e "${Cvert}Action terminée avec succès${CVOID}";;
+        52) echo -e "${Cjaune}Action abordée${CVOID}";;
+        *) echo -e "${Crouge}Action terminée avec des erreurs${CVOID}";;
+    esac
+}
 
-    echo -e "${Cvert}Action terminée avec succès${CVOID}"
+
+###
+# Synchronisation de la configuration des packages par l'action PULL
+##
+function module_ubuntu_action_synccfg_pull()
+{
+    logger_debug "module_ubuntu_action_synccfg_pull ($1, $2)"
+    local ADDRESS=$1
+    local CONFIGDIR=$2
+
+    echo -e "${CBLANC}Récupérer la configuration${CVOID} depuis le serveur ${CCYAN}${ADDRESS}${CVOID} vers ${CCYAN}${CONFIGDIR}${CVOID}"
+    stdin_readYesOrNo "Continuer l'initialisation du module" false
+    [[ ${OLIX_STDIN_RETURN} == false ]] && return 52
+
+    file_synchronize ${OLIX_MODULE_UBUNTU_SYNC_PORT} ${ADDRESS} ${CONFIGDIR}
+    return $?
 }
