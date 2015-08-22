@@ -16,6 +16,16 @@ function module_ubuntu_action_init()
 {
     logger_debug "module_ubuntu_action_init ($@)"
 
+    if [[ ! -f ${OLIX_MODULE_FILECONF} ]]; then
+        echo -e "${CJAUNE}Avant l'initialisation, il faut que la configuration du serveur soit présente${CVOID}"
+        echo -e " 1. Installer les fichiers de configuration"
+        echo -e "        via la commande ${Ccyan}olixsh ubuntu synccfg pull${CVOID}"
+        echo -e " 2. Initialiser le module"
+        echo -e "        avec la commande ${Ccyan}olixsh ubuntu init${CVOID}"
+        stdin_readYesOrNo "Continuer l'initialisation du module" false
+        [[ ${OLIX_STDIN_RETURN} == false ]] && return 0
+    fi
+
     # Demande du fichier de paramètre
     stdin_readFile "Chemin complet du fichier contenant la configuration de l'installation du serveur" "${OLIX_MODULE_UBUNTU_CONFIG}"
     logger_debug "OLIX_MODULE_UBUNTU_CONFIG=${OLIX_STDIN_RETURN}"
