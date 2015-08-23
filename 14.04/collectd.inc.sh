@@ -18,9 +18,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de COLLECTD ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de COLLECTD ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de COLLECTD ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de COLLECTD ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -54,6 +66,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -113,6 +128,20 @@ ubuntu_include_savecfg()
         module_ubuntu_backupFileConfiguration "/etc/collectd/collectd.conf.d/$I.conf" "${__PATH_CONFIG}/$I.conf"
     done
    
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (collectd)"
+
+    echo "collectd"
+    for I in ${OLIX_MODULE_UBUNTU_COLLECTD__PLUGINS}; do
+       echo "collectd/$I.conf"
+    done
 }
 
 
