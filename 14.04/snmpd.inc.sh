@@ -17,9 +17,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de SNMPD ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de SNMPD ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de SNMPD ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de SNMPD ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -53,6 +65,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -105,4 +120,16 @@ ubuntu_include_savecfg()
     logger_debug "ubuntu_include_savecfg (snmpd)"
 
     module_ubuntu_backupFileConfiguration "/etc/snmp/snmpd.conf" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_SNMPD__FILECFG}"
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (snmpd)"
+
+    echo "snmpd"
+    echo "snmpd/${OLIX_MODULE_UBUNTU_SNMPD__FILECFG}"
 }

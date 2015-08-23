@@ -19,9 +19,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration des TOOLS ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation des TOOLS ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration des TOOLS ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration des TOOLS ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -45,6 +57,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -95,4 +110,17 @@ ubuntu_include_savecfg()
 
     module_ubuntu_backupFileConfiguration "/etc/cron.d/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}"
     module_ubuntu_backupFileConfiguration "/etc/logrotate.d/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}"
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (tools)"
+
+    echo "tools"
+    echo "tools/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}"
+    echo "tools/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}"
 }

@@ -30,9 +30,21 @@ MODULE_UBUNTU_POSTGRES_VERSION="9.3"
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de PostgreSQL ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de PostgreSQL ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de PostgreSQL ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de PostgreSQL ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -66,6 +78,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -137,7 +152,7 @@ ubuntu_include_config()
 ##
 ubuntu_include_restart()
 {
-    logger_debug "ubuntu_include_restart (postgresql)"
+    logger_debug "ubuntu_include_restart (postgres)"
 
     logger_info "Redémarrage du service PostgreSQL"
     service postgresql restart
@@ -150,10 +165,23 @@ ubuntu_include_restart()
 ##
 ubuntu_include_savecfg()
 {
-    logger_debug "ubuntu_include_savecfg (postgresql)"
+    logger_debug "ubuntu_include_savecfg (postgres)"
 
     [[ -n "${OLIX_MODULE_UBUNTU_POSTGRES__FILECFG}" ]] && module_ubuntu_backupFileConfiguration "/etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_POSTGRES__FILECFG}"
     [[ -n "${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}" ]] && module_ubuntu_backupFileConfiguration "/etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}"
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (postgres)"
+
+    echo "postgres"
+    [[ -n "${OLIX_MODULE_UBUNTU_POSTGRES__FILECFG}" ]] && echo "postgres/${OLIX_MODULE_UBUNTU_POSTGRES__FILECFG}"
+    [[ -n "${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}" ]] && echo "postgres/${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}"
 }
 
 
