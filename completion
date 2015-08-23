@@ -36,6 +36,10 @@ _olixsh_module()
             _olixsh_module_savecfg_packages
             return 0
             ;;
+        synccfg)
+            _olixsh_module_synccfg_actions
+            return 0
+            ;;
     esac
 }
 
@@ -47,7 +51,7 @@ _olixsh_module_actions()
 {
     local CUR ACTIONS
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    ACTIONS="init install config update savecfg help"
+    ACTIONS="init install config update savecfg synccfg help"
 
     COMPREPLY=( $(compgen -W "${ACTIONS}" -- ${CUR}) )
 }
@@ -72,7 +76,7 @@ _olixsh_module_install_packages()
 {
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    PACKAGES="--all network users virtualbox vmware apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+    PACKAGES="--all network users virtualbox vmware apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
 }
@@ -85,7 +89,7 @@ _olixsh_module_config_packages()
 {
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    PACKAGES="apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+    PACKAGES="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
 }
@@ -98,7 +102,20 @@ _olixsh_module_savecfg_packages()
 {
     local CUR PACKAGES
     CUR="${COMP_WORDS[COMP_CWORD]}"
-    PACKAGES="--all apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools help"
+    PACKAGES="--all apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools help"
 
     COMPREPLY=( $(compgen -W "${PACKAGES}" -- ${CUR}) )
+}
+
+
+###
+# Liste des actions de l'action SAVECFG du module Ubuntu
+##
+_olixsh_module_synccfg_actions()
+{
+    local CUR ACTION
+    CUR="${COMP_WORDS[COMP_CWORD]}"
+    ACTION="--port pull push help"
+
+    COMPREPLY=( $(compgen -W "${ACTION}" -- ${CUR}) )
 }

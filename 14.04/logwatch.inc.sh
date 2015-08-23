@@ -19,9 +19,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de LOGWATCH ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de LOGWATCH ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de LOGWATCH ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de LOGWATCH ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -55,6 +67,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -127,5 +142,23 @@ ubuntu_include_savecfg()
     done
     for I in ${OLIX_MODULE_UBUNTU_LOGWATCH__SERVICES}; do
         module_ubuntu_backupFileConfiguration "/etc/logwatch/conf/services/${I}" "${__PATH_CONFIG}/services/${I}"
+    done
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (logwatch)"
+
+    echo "logwatch logwatch/logfiles logwatch/services"
+    echo "logwatch/${OLIX_MODULE_UBUNTU_LOGWATCH__FILECFG}"
+    for I in ${OLIX_MODULE_UBUNTU_LOGWATCH__LOGFILES}; do
+        echo "logwatch/logfiles/${I}"
+    done
+    for I in ${OLIX_MODULE_UBUNTU_LOGWATCH__SERVICES}; do
+        echo "logwatch/services/${I}"
     done
 }

@@ -23,9 +23,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de SAMBA ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de SAMBA ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de SAMBA ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de SAMBA ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -59,6 +71,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -114,6 +129,18 @@ ubuntu_include_savecfg()
     logger_debug "ubuntu_include_savecfg (samba)"
 
     module_ubuntu_backupFileConfiguration "/etc/samba/smb.conf" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_SAMBA__FILECFG}"
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (samba)"
+
+    echo "samba"
+    echo "samba/${OLIX_MODULE_UBUNTU_SAMBA__FILECFG}"
 }
 
 

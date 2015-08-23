@@ -18,9 +18,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de PHP ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de PHP ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de PHP ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de PHP ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -54,6 +66,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -106,4 +121,17 @@ ubuntu_include_savecfg()
     logger_debug "ubuntu_include_savecfg (php)"
 
     module_ubuntu_backupFileConfiguration "/etc/php5/apache2/conf.d/${OLIX_MODULE_UBUNTU_PHP__FILECFG}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_PHP__FILECFG}"
+}
+
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (php)"
+
+    echo "php"
+    echo "php/${OLIX_MODULE_UBUNTU_PHP__FILECFG}"
 }

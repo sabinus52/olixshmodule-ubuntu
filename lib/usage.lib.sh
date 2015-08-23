@@ -26,6 +26,7 @@ function module_ubuntu_usage_main()
     echo -e "${Cjaune} config  ${CVOID}  : Installation des fichiers de configuration d'un package"
     echo -e "${Cjaune} update  ${CVOID}  : Mise à jour du système"
     echo -e "${Cjaune} savecfg ${CVOID}  : Sauvegarde de la configuration actuelle"
+    echo -e "${Cjaune} synccfg ${CVOID}  : Synchronisation de la configuration actuelle vers un autre serveur"
     echo -e "${Cjaune} help    ${CVOID}  : Affiche cet écran"
 }
 
@@ -53,6 +54,7 @@ function module_ubuntu_usage_install()
     echo -e "${Cjaune} apache     ${CVOID} : Installation et configuration d'Apache"
     echo -e "${Cjaune} php        ${CVOID} : Installation et configuration des modules PHP"
     echo -e "${Cjaune} mysql      ${CVOID} : Installation et configuration du MySQL"
+    echo -e "${Cjaune} postgres   ${CVOID} : Installation et configuration de PostgreSQL"
     echo -e "${Cjaune} nfs        ${CVOID} : Installation et configuration du partage NFS"
     echo -e "${Cjaune} samba      ${CVOID} : Installation et configuration du partage Samba"
     echo -e "${Cjaune} ftp        ${CVOID} : Installation et configuration du serveur FTP"
@@ -82,6 +84,7 @@ function module_ubuntu_usage_config()
     echo -e "${Cjaune} apache     ${CVOID} : Configuration d'Apache"
     echo -e "${Cjaune} php        ${CVOID} : Configuration des modules PHP"
     echo -e "${Cjaune} mysql      ${CVOID} : Configuration du MySQL"
+    echo -e "${Cjaune} postgres   ${CVOID} : Configuration de PostgreSQL"
     echo -e "${Cjaune} nfs        ${CVOID} : Configuration du partage NFS"
     echo -e "${Cjaune} samba      ${CVOID} : Configuration du partage Samba"
     echo -e "${Cjaune} ftp        ${CVOID} : Configuration du serveur FTP"
@@ -114,6 +117,7 @@ function module_ubuntu_usage_savecfg()
     echo -e "${Cjaune} apache     ${CVOID} : Sauvegarde de la configuration d'Apache"
     echo -e "${Cjaune} php        ${CVOID} : Sauvegarde de la configuration des modules PHP"
     echo -e "${Cjaune} mysql      ${CVOID} : Sauvegarde de la configuration de MySQL"
+    echo -e "${Cjaune} postgres   ${CVOID} : Sauvegarde de la configuration de PostgreSQL"
     echo -e "${Cjaune} nfs        ${CVOID} : Sauvegarde de la configuration du partage NFS"
     echo -e "${Cjaune} samba      ${CVOID} : Sauvegarde de la configuration du partage Samba"
     echo -e "${Cjaune} ftp        ${CVOID} : Sauvegarde de la configuration du serveur FTP"
@@ -123,6 +127,28 @@ function module_ubuntu_usage_savecfg()
     echo -e "${Cjaune} monit      ${CVOID} : Sauvegarde de la configuration du monitoring"
     echo -e "${Cjaune} snmpd      ${CVOID} : Sauvegarde de la configuration du protocol de gestion du réseau"
     echo -e "${Cjaune} tools      ${CVOID} : Sauvegarde de la configuration des outils supplémentaires"
+    echo -e "${Cjaune} help       ${CVOID} : Affiche cet écran"
+}
+
+
+###
+# Usage de l'action SUNCCFG
+##
+function module_ubuntu_usage_synccfg()
+{
+    logger_debug "module_ubuntu_usage_synccfg ()"
+    stdout_printVersion
+    echo
+    echo -e "Synchronisation de la configuration des services avec un autre serveur${CVOID}"
+    echo
+    echo -e "Récupère la configuration depuis un autre serveur"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}pull [ADDRESS SERVER] [PATH CONFIG] [OPTIONS]${CVOID}"
+    echo
+    echo -e "Pousse la configuration vers au autre serveur"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}push [ADDRESS SERVER] [OPTIONS]${CVOID}"
+    echo
+    echo -e "${CJAUNE}Liste des OPTIONS disponibles${CVOID} :"
+    echo -e "${Cjaune} --port=22  ${CVOID} : Port du serveur"
     echo -e "${Cjaune} help       ${CVOID} : Affiche cet écran"
 }
 
@@ -140,6 +166,10 @@ function module_ubuntu_usage_getParams()
         case $1 in
             --all)
                 OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE=true
+                ;;
+            --port=*)
+                IFS='=' read -ra PARAM <<< "$1"
+                OLIX_MODULE_UBUNTU_SYNC_PORT=${PARAM[1]}
                 ;;
             *)
                 OLIX_MODULE_UBUNTU_PACKAGES="${OLIX_MODULE_UBUNTU_PACKAGES} $1"

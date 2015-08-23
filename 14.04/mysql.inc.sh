@@ -28,9 +28,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de MYSQL ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de MYSQL ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de MYSQL ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de MYSQL ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -64,6 +76,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -152,6 +167,18 @@ ubuntu_include_savecfg()
 
 
 ###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (mysql)"
+
+    echo "mysql"
+    echo "mysql/${OLIX_MODULE_UBUNTU_MYSQL__FILECFG}"
+}
+
+
+###
 # Initialisation du répertoire contenant les données de la base
 ##
 function ubuntu_include_mysql_path()
@@ -171,7 +198,7 @@ function ubuntu_include_mysql_path()
         [[ $? -ne 0 ]] && logger_error
     fi
     logger_debug "chown -R mysql.mysql ${MYSQL_PATH}"
-    chown -R mysql:mysql /home/mysql > ${OLIX_LOGGER_FILE_ERR} 2>&1
+    chown -R mysql:mysql ${MYSQL_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
     [[ $? -ne 0 ]] && logger_error
     logger_debug "cp -rp /var/lib/mysql/ ${MYSQL_PATH}"
     cp -rp /var/lib/mysql/* ${MYSQL_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1

@@ -46,7 +46,7 @@ function module_ubuntu_executeService()
         logger_warning "Pas de tâche '$1' pour le service '$2'"
         return 1
     else
-        ubuntu_include_title
+        ubuntu_include_title $1
         ubuntu_include_main $1
         return $?
     fi

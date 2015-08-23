@@ -9,11 +9,12 @@
 OLIX_MODULE_NAME="ubuntu"
 
 OLIX_MODULE_UBUNTU_VERSION_RELEASE=$(lsb_release -sr)
+OLIX_MODULE_UBUNTU_SYNC_PORT=22
 
 OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE=false
-OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network virtualbox vmware users apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
-OLIX_MODULE_UBUNTU_PACKAGES_CONFIG="apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
-OLIX_MODULE_UBUNTU_PACKAGES_SAVECFG="apache php mysql nfs samba ftp postfix collectd logwatch monit snmpd tools"
+OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network virtualbox vmware users apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
+OLIX_MODULE_UBUNTU_PACKAGES_CONFIG="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
+OLIX_MODULE_UBUNTU_PACKAGES_SAVECFG="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
 
 
 ###
@@ -94,13 +95,12 @@ olixmod_main()
         core_exit 1
     fi
     logger_info "Execution de l'action '${ACTION}' du module ${OLIX_MODULE_NAME} version ${OLIX_MODULE_UBUNTU_VERSION_RELEASE}"
-    
-    # Charge la configuration du module
-    config_loadConfigModule "${OLIX_MODULE_NAME}"
-    config_loadConfigModule "mysql"
 
     # Affichage de l'aide de l'action
     [[ "$2" == "help" && "$1" != "init" ]] && module_ubuntu_usage_$ACTION && core_exit 0
+
+    # Charge la configuration du module
+    [[ "$1" != "synccfg" ]] && config_loadConfigModule "${OLIX_MODULE_NAME}"
 
     shift
     module_ubuntu_usage_getParams $@

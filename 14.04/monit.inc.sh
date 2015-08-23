@@ -17,9 +17,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de MONIT ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de MONIT ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de MONIT ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de MONIT ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -53,6 +65,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -111,5 +126,19 @@ ubuntu_include_savecfg()
 
     for I in ${OLIX_MODULE_UBUNTU_MONIT__CONFD}; do
         module_ubuntu_backupFileConfiguration "/etc/monit/conf.d/${I}" "${__PATH_CONFIG}/${I}"
+    done
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (monit)"
+
+    echo "monit"
+    for I in ${OLIX_MODULE_UBUNTU_MONIT__CONFD}; do
+       echo "monit/$I.conf"
     done
 }

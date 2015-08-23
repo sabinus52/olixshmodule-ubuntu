@@ -21,9 +21,21 @@
 
 ubuntu_include_title()
 {
-    echo
-    echo -e "${CBLANC} Installation et Configuration de APACHE ${CVOID}"
-    echo -e "-------------------------------------------------------------------------------"
+    case $1 in
+        install)
+            echo
+            echo -e "${CBLANC} Installation de APACHE ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        config)
+            echo
+            echo -e "${CBLANC} Configuration de APACHE ${CVOID}"
+            echo -e "-------------------------------------------------------------------------------"
+            ;;
+        savecfg)
+            echo -e "${CBLANC} Sauvegarde de la configuration de APACHE ${CVOID}"
+            ;;
+    esac
 }
 
 
@@ -57,6 +69,9 @@ ubuntu_include_main()
             ;;
         savecfg)
             ubuntu_include_savecfg
+            ;;
+        synccfg)
+            ubuntu_include_synccfg
             ;;
     esac
 }
@@ -115,6 +130,21 @@ ubuntu_include_savecfg()
         module_ubuntu_backupFileConfiguration "/etc/apache2/conf-available/$I.conf" "${__PATH_CONFIG}/conf/$I.conf"
     done
     module_ubuntu_backupFileConfiguration "/etc/apache2/sites-available/000-default.conf" "${__PATH_CONFIG}/default/${OLIX_MODULE_UBUNTU_APACHE__DEFAULT}"
+}
+
+
+###
+# Synchronisation de la configuration
+##
+ubuntu_include_synccfg()
+{
+    logger_debug "ubuntu_include_synccfg (apache)"
+
+    echo "apache apache/conf apache/default"
+    for I in ${OLIX_MODULE_UBUNTU_APACHE__CONFIGS}; do
+       echo "apache/conf/$I.conf"
+    done
+    echo "apache/default/${OLIX_MODULE_UBUNTU_APACHE__DEFAULT}"
 }
 
 
