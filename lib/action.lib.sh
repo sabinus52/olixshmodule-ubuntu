@@ -205,7 +205,7 @@ function module_ubuntu_action_synccfg()
     # En fonction de l'action PUSH ou PULL
     case ${ACTION} in
         push)
-            echo "Pousser la config"
+            module_ubuntu_action_synccfg_push "${ADDRESS}"
             ;;
         pull)
             module_ubuntu_action_synccfg_pull "${ADDRESS}" "${CONFIGDIR}"
@@ -222,6 +222,8 @@ function module_ubuntu_action_synccfg()
 
 ###
 # Synchronisation de la configuration des packages par l'action PULL
+# @param $1 : Adresse source de la config
+# @param $2 : Chemin de destination
 ##
 function module_ubuntu_action_synccfg_pull()
 {
@@ -242,4 +244,53 @@ function module_ubuntu_action_synccfg_pull()
 
     file_synchronize ${OLIX_MODULE_UBUNTU_SYNC_PORT} ${ADDRESS} ${CONFIGDIR}
     return $?
+}
+
+
+###
+# Synchronisation de la configuration des packages par l'action PUSH
+# @param $1 : Adresse du serveur de stockage de la config
+##
+function module_ubuntu_action_synccfg_push()
+{
+    logger_debug "module_ubuntu_action_synccfg_push ($1)"
+    local ADDRESS=$1
+    local PACKAGE J FILE_INCLUDE FILES RET PARAM
+
+    config_loadConfigModule "${OLIX_MODULE_NAME}"
+    CONFIGDIR=$(dirname ${OLIX_MODULE_UBUNTU_CONFIG})
+    logger_debug "CONFIGDIR=${CONFIGDIR}"
+
+    echo -e "${CBLANC}Pousser la configuration${CVOID} de ${CCYAN}${CONFIGDIR}${CVOID} vers le serveur ${CCYAN}${ADDRESS}${CVOID}"
+    stdin_readYesOrNo "Continuer l'initialisation du module" false
+    [[ ${OLIX_STDIN_RETURN} == false ]] && return 52
+
+    # Charge le fichier de configuration contenant les paramètes necessaires à l'installation
+    module_ubuntu_loadConfiguration
+
+    # Création du fichier include contenant les fichiers à synchroniser
+    FILE_INCLUDE=$(core_makeTemp)
+    echo "+ $(basename ${OLIX_MODULE_UBUNTU_CONFIG})" > ${FILE_INCLUDE}
+
+    # Pour chaque package
+    for PACKAGE in ${OLIX_MODULE_UBUNTU_PACKAGES_SAVECFG}; do
+        logger_info "Sauvegarde de la configuration de '${PACKAGE}'"
+        module_ubuntu_executeService savecfg ${PACKAGE}
+
+        FILES=$(module_ubuntu_executeService synccfg ${PACKAGE})
+        for J in ${FILES}; do
+            echo "+ ${J}" >> ${FILE_INCLUDE}
+        done
+        
+    done
+    echo "- *" >> ${FILE_INCLUDE}
+
+    echo -e "${CBLANC} Synchronisation des fichiers de configuration vers le serveur ${CCYAN}${ADDRESS}${CVOID}"
+
+    [[ ${OLIX_OPTION_VERBOSE} == true ]] && PARAM="--progress --stats"
+    rsync ${PARAM} --rsh="ssh -p ${OLIX_MODULE_UBUNTU_SYNC_PORT}" --archive --compress --include-from=${FILE_INCLUDE} $CONFIGDIR/ $ADDRESS/ 2> ${OLIX_LOGGER_FILE_ERR}
+    RET=$?
+
+    rm -f ${FILE_INCLUDE}
+    return ${RET}
 }

@@ -139,13 +139,16 @@ function module_ubuntu_usage_synccfg()
     logger_debug "module_ubuntu_usage_synccfg ()"
     stdout_printVersion
     echo
-    echo -e "Synchronisation de la configuration des services avec un autre serveur ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID}"
+    echo -e "Synchronisation de la configuration des services avec un autre serveur${CVOID}"
     echo
-    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}action [ADDRESS SERVER] [OPTIONS]${CVOID}"
+    echo -e "Récupère la configuration depuis un autre serveur"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}pull [ADDRESS SERVER] [PATH CONFIG] [OPTIONS]${CVOID}"
     echo
-    echo -e "${CJAUNE}Liste des ACTIONS disponibles${CVOID} :"
-    echo -e "${Cjaune} push       ${CVOID} : Pousse la configuration vers au autre serveur"
-    echo -e "${Cjaune} pull       ${CVOID} : Récupère la configuration depuis un autre serveur"
+    echo -e "Pousse la configuration vers au autre serveur"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}push [ADDRESS SERVER] [OPTIONS]${CVOID}"
+    echo
+    echo -e "${CJAUNE}Liste des OPTIONS disponibles${CVOID} :"
+    echo -e "${Cjaune} --port=22  ${CVOID} : Port du serveur"
     echo -e "${Cjaune} help       ${CVOID} : Affiche cet écran"
 }
 
