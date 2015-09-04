@@ -15,8 +15,9 @@
 function module_ubuntu_action_init()
 {
     logger_debug "module_ubuntu_action_init ($@)"
+    local FILECONF=$(config_getFilenameModule ${OLIX_MODULE_NAME})
 
-    if [[ ! -f ${OLIX_MODULE_FILECONF} ]]; then
+    if [[ ! -f ${FILECONF} ]]; then
         echo -e "${CJAUNE}Avant l'initialisation, il faut que la configuration du serveur soit présente${CVOID}"
         echo -e " 1. Installer les fichiers de configuration"
         echo -e "        via la commande ${Ccyan}olixsh ubuntu synccfg pull [ADDRESS] [DESTINATION]${CVOID}"
@@ -38,12 +39,12 @@ function module_ubuntu_action_init()
     OLIX_MODULE_UBUNTU_SYNC_PORT=${OLIX_STDIN_RETURN}
    
     # Ecriture du fichier de configuration
-    logger_info "Création du fichier de configuration ${OLIX_MODULE_FILECONF}"
-    echo "# Fichier de configuration pour l'install d'Ubuntu" > ${OLIX_MODULE_FILECONF}
+    logger_info "Création du fichier de configuration ${FILECONF}"
+    echo "# Fichier de configuration pour l'install d'Ubuntu" > ${FILECONF}
     [[ $? -ne 0 ]] && logger_critical
-    echo "OLIX_MODULE_UBUNTU_CONFIG=${OLIX_MODULE_UBUNTU_CONFIG}" >> ${OLIX_MODULE_FILECONF}
-    echo "OLIX_MODULE_UBUNTU_SYNC_SERVER=${OLIX_MODULE_UBUNTU_SYNC_SERVER}" >> ${OLIX_MODULE_FILECONF}
-    echo "OLIX_MODULE_UBUNTU_SYNC_PORT=${OLIX_MODULE_UBUNTU_SYNC_PORT}" >> ${OLIX_MODULE_FILECONF}
+    echo "OLIX_MODULE_UBUNTU_CONFIG=${OLIX_MODULE_UBUNTU_CONFIG}" >> ${FILECONF}
+    echo "OLIX_MODULE_UBUNTU_SYNC_SERVER=${OLIX_MODULE_UBUNTU_SYNC_SERVER}" >> ${FILECONF}
+    echo "OLIX_MODULE_UBUNTU_SYNC_PORT=${OLIX_MODULE_UBUNTU_SYNC_PORT}" >> ${FILECONF}
 
     echo -e "${Cvert}Action terminée avec succès${CVOID}"
     return 0

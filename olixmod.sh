@@ -64,6 +64,7 @@ olixmod_init()
 {
     logger_debug "module_ubuntu__olixmod_init (null)"
     source modules/ubuntu/lib/action.lib.sh
+    module_initialize $@
     module_ubuntu_action_init $@
 }
 
