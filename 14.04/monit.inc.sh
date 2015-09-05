@@ -82,7 +82,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages MONIT"
     apt-get --yes install monit
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages MONIT"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages MONIT"
 }
 
 
@@ -95,7 +95,7 @@ ubuntu_include_config()
 
     logger_info "Effacement des fichiers déjà présents dans /etc/monit/conf.d"
     rm -f /etc/monit/conf.d/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     logger_info "Mise en place des fichiers de conf dans /etc/monit/conf.d"
     for I in ${OLIX_MODULE_UBUNTU_MONIT__CONFD}; do
         module_ubuntu_installFileConfiguration "${__PATH_CONFIG}/${I}" "/etc/monit/conf.d/" \
@@ -113,7 +113,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service MONIT"
     service monit restart
-    [[ $? -ne 0 ]] && logger_error "Service MONIT NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service MONIT NOT running"
 }
 
 

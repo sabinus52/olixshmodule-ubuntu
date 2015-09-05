@@ -18,7 +18,7 @@ function module_ubuntu_usage_main()
     echo
     echo -e "Installation, configuration et gestion d'un serveur Ubuntu ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID}"
     echo
-    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}action${CVOID}"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}<action>${CVOID}"
     echo
     echo -e "${CJAUNE}Liste des ACTIONS disponibles${CVOID} :"
     echo -e "${Cjaune} init    ${CVOID}  : Initialisation du bundle"
@@ -41,7 +41,7 @@ function module_ubuntu_usage_install()
     echo
     echo -e "Installation d'un serveur Ubuntu ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID} et ses packages"
     echo
-    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}install${CVOID} ${CBLANC}packages [OPTIONS]${CVOID}"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}install${CVOID} ${CBLANC}<packages...> [OPTIONS]${CVOID}"
     echo
     echo -e "${Ccyan}OPTIONS${CVOID}"
     echo -e "${CBLANC} --all|-a   ${CVOID} : Pour installer le serveur complet avec tous ses packages"
@@ -78,7 +78,7 @@ function module_ubuntu_usage_config()
     echo
     echo -e "Configuration des packages d'un serveur Ubuntu ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID}"
     echo
-    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}config${CVOID} ${CBLANC}packages${CVOID}"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}config${CVOID} ${CBLANC}<package>${CVOID}"
     echo
     echo -e "${CJAUNE}Liste des PACKAGES disponibles${CVOID} :"
     echo -e "${Cjaune} apache     ${CVOID} : Configuration d'Apache"
@@ -108,7 +108,7 @@ function module_ubuntu_usage_savecfg()
     echo
     echo -e "Sauvegarde de la configuration des services d'un serveur Ubuntu ${CBLANC}${OLIX_MODULE_UBUNTU_VERSION_RELEASE}${CVOID}"
     echo
-    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}savecfg${CVOID} ${CBLANC}packages [OPTIONS]${CVOID}"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}savecfg${CVOID} ${CBLANC}<packages...> [OPTIONS]${CVOID}"
     echo
     echo -e "${Ccyan}OPTIONS${CVOID}"
     echo -e "${CBLANC} --all|-a   ${CVOID} : Pour sauvegarder toutes les configuration des packages"
@@ -142,10 +142,10 @@ function module_ubuntu_usage_synccfg()
     echo -e "Synchronisation de la configuration des services avec un autre serveur${CVOID}"
     echo
     echo -e "Récupère la configuration depuis un autre serveur"
-    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}pull [ADDRESS SERVER] [PATH CONFIG] [OPTIONS]${CVOID}"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}pull [<user>@<host>:/<path>] [PATH CONFIG] [OPTIONS]${CVOID}"
     echo
-    echo -e "Pousse la configuration vers au autre serveur"
-    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}push [ADDRESS SERVER] [OPTIONS]${CVOID}"
+    echo -e "Pousse la configuration vers un autre serveur"
+    echo -e "${CBLANC} Usage : ${CVIOLET}$(basename ${OLIX_ROOT_SCRIPT}) ${CVERT}ubuntu ${CJAUNE}synccfg${CVOID} ${CBLANC}push [<user>@<host>:/<path>] [OPTIONS]${CVOID}"
     echo
     echo -e "${CJAUNE}Liste des OPTIONS disponibles${CVOID} :"
     echo -e "${Cjaune} --port=22  ${CVOID} : Port du serveur"

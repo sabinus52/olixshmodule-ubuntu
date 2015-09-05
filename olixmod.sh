@@ -8,13 +8,25 @@
 
 OLIX_MODULE_NAME="ubuntu"
 
+# Version en cours d'Ubuntu
 OLIX_MODULE_UBUNTU_VERSION_RELEASE=$(lsb_release -sr)
-OLIX_MODULE_UBUNTU_SYNC_PORT=22
 
+# Si on doit utiliser tous les packages
 OLIX_MODULE_UBUNTU_PACKAGES_COMPLETE=false
+
+# Liste des packages en fonction de l'action à traiter
 OLIX_MODULE_UBUNTU_PACKAGES_INSTALL="network virtualbox vmware users apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
 OLIX_MODULE_UBUNTU_PACKAGES_CONFIG="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
 OLIX_MODULE_UBUNTU_PACKAGES_SAVECFG="apache php mysql postgres nfs samba ftp postfix collectd logwatch monit snmpd tools"
+
+# Emplacement du fichier de configuration des paramètres (/etc/olixsh/ubuntu.conf)
+OLIX_MODULE_UBUNTU_CONFIG=
+
+# Addresse du serveur distant du dépôt de la configuration (/etc/olixsh/ubuntu.conf | $param)
+OLIX_MODULE_UBUNTU_SYNC_SERVER=
+# Port du serveur distant du dépôt de la configuration (/etc/olixsh/ubuntu.conf | --port=)
+OLIX_MODULE_UBUNTU_SYNC_PORT=22
+
 
 
 ###
@@ -64,6 +76,7 @@ olixmod_init()
 {
     logger_debug "module_ubuntu__olixmod_init (null)"
     source modules/ubuntu/lib/action.lib.sh
+    module_initialize $@
     module_ubuntu_action_init $@
 }
 

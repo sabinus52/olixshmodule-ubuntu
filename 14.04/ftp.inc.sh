@@ -91,20 +91,20 @@ ubuntu_include_install()
 
     logger_info "Installation des packages FTP"
     apt-get --yes install pure-ftpd
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages FTP"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages FTP"
 
     logger_info "Modification du VirtualChRoot dans /etc/default/pure-ftpd-common"
     sed -i "s/^VIRTUALCHROOT=.*$/VIRTUALCHROOT=true/g" /etc/default/pure-ftpd-common > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
 
     # Activation de PureDB
     logger_info "Suppression de /etc/pure-ftpd/auth/75puredb"
     rm -f /etc/pure-ftpd/auth/75puredb > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     logger_info "Activation de la base puredb pour les utilisateurs virtuels"
     cd /etc/pure-ftpd/auth
     ln -sf ../conf/PureDB 75puredb > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     cd ${OLIX_ROOT}
 }
 
@@ -133,7 +133,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service FTP"
     service pure-ftpd restart
-    [[ $? -ne 0 ]] && logger_error "Service FTP NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service FTP NOT running"
 }
 
 
@@ -199,13 +199,13 @@ function ubuntu_include_ftp_users()
         if pure-pw show ${USERNAME} > /dev/null 2>&1; then
             logger_debug "pure-pw usermod ${USERPARAM}"
             pure-pw usermod ${USERNAME} ${USERPARAM} -m 2> ${OLIX_LOGGER_FILE_ERR}
-            [[ $? -ne 0 ]] && logger_error
+            [[ $? -ne 0 ]] && logger_critical
             echo -e "Création de l'utilisateur ${CCYAN}${USERNAME}${CVOID} : ${CBLEU}Déjà créé ...${CVOID}"
         else
             logger_debug "pure-pw useradd ${USERNAME} ${USERPARAM}"
             echo -e "Initialisation du mot de passe de ${CCYAN}${USERNAME}${CVOID}"
             pure-pw useradd ${USERNAME} ${USERPARAM} -m 2> ${OLIX_LOGGER_FILE_ERR}
-            [[ $? -ne 0 ]] && logger_error
+            [[ $? -ne 0 ]] && logger_critical
             echo -e "Création de l'utilisateur ${CCYAN}${USERNAME}${CVOID} : ${CVERT}OK ...${CVOID}"
         fi
     done

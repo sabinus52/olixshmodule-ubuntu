@@ -18,7 +18,7 @@ function module_ubuntu_loadConfiguration()
 
     if [[ ! -r ${FILECFG} ]]; then
         logger_warning "${FILECFG} absent"
-        logger_error "Impossible de charger le fichier de configuration du serveur"
+        logger_critical "Impossible de charger le fichier de configuration du serveur"
     fi
 
     logger_info "Chargement du fichier '${FILECFG}'"
@@ -38,7 +38,7 @@ function module_ubuntu_executeService()
 
     logger_info "Chargement du fichier '$2.inc.sh' pour l'exécution de la tâche"
     if [[ ! -r ${FILEEXEC} ]]; then
-        logger_error "Fichier introuvable : ${FILEEXEC}"
+        logger_critical "Fichier introuvable : ${FILEEXEC}"
     fi
     source ${FILEEXEC}
     
@@ -65,16 +65,16 @@ function module_ubuntu_backupFileOriginal()
     if [[ ! -f ${ORIGINAL} ]]; then
         logger_info "Sauvegarde de l'original '$1'"
         cp $1 ${ORIGINAL} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error "Impossible de sauvegarder '$1'"
+        [[ $? -ne 0 ]] && logger_critical "Impossible de sauvegarder '$1'"
     fi
 
     logger_info "Effacement de l'ancien fichier '$1'"
     rm -f $1 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error "Impossible d'effacer '$1'"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'effacer '$1'"
 
     logger_info "Remise de l'original du fichier '$1'"
     cp ${ORIGINAL} $1 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error "Impossible de remettre l'original '$1'"
+    [[ $? -ne 0 ]] && logger_critical "Impossible de remettre l'original '$1'"
 }
 
 
@@ -107,19 +107,19 @@ function module_ubuntu_installFileConfiguration()
 function module_ubuntu_backupFileConfiguration()
 {
     logger_debug "module_ubuntu_backupFileConfiguration ($1, $2)"
-    [[ ! -f $1 ]] && logger_error "Le fichier '$1' n'existe pas"
+    [[ ! -f $1 ]] && logger_critical "Le fichier '$1' n'existe pas"
     if [[ -L $1 ]]; then
         logger_warning "Sauvegarde inutile $1 : lien symbolique"
         return 0
     fi
     logger_debug "cp $1 $2"
     cp $1 $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     local OWNER=$(stat -c %U ${OLIX_MODULE_UBUNTU_CONFIG})
     local GROUP=$(stat -c %G ${OLIX_MODULE_UBUNTU_CONFIG})
     logger_debug "chown -R ${OWNER}.${GROUP} $2"
     chown -R ${OWNER}.${GROUP} $2 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     echo -e "Sauvegarde de $1 : ${CVERT}OK ...${CVOID}"
     return 0
 }

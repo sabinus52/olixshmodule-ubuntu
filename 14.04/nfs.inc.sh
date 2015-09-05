@@ -82,7 +82,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages NFS"
     apt-get --yes install nfs-common nfs-kernel-server
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages NFS"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages NFS"
 }
 
 
@@ -108,7 +108,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service NFS"
     service nfs-kernel-server restart
-    [[ $? -ne 0 ]] && logger_error "Service NFS NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service NFS NOT running"
 }
 
 

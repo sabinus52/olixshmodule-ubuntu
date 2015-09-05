@@ -82,7 +82,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages SNMPD"
     apt-get --yes install snmp snmpd
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages SNMPD"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages SNMPD"
 }
 
 
@@ -108,7 +108,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service SNMPD"
     service snmpd restart
-    [[ $? -ne 0 ]] && logger_error "Service SNMPD NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service SNMPD NOT running"
 }
 
 

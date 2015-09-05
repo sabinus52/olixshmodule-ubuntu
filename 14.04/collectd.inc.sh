@@ -83,7 +83,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages COLLECTD"
     apt-get --yes install collectd librrds-perl libconfig-general-perl libhtml-parser-perl libregexp-common-perl
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages COLLECTD"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages COLLECTD"
 
     # Activation des Plugins obligatoire
     ubuntu_include_collectd_plugins_required
@@ -113,7 +113,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service COLLECTD"
     service collectd restart
-    [[ $? -ne 0 ]] && logger_error "Service COLLECTD NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service COLLECTD NOT running"
 }
 
 
@@ -156,11 +156,11 @@ function ubuntu_include_collectd_plugins_required()
     module_ubuntu_backupFileOriginal "/etc/collectd/collectd.conf"
     logger_info "Commentaire sur les LoadPlugin"
     sed -i "s/^LoadPlugin/\#LoadPlugin/g" /etc/collectd/collectd.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     for I in ${PLUGINS}; do
         logger_info "Activation du plugin '${I}'"
         sed -i "s/^\#LoadPlugin $I/LoadPlugin $I/g" /etc/collectd/collectd.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
     done
 }
 
@@ -174,7 +174,7 @@ function ubuntu_include_collectd_plugins()
 
     logger_info "Effacement des anciennes configurations"
     rm -f /etc/collectd/collectd.conf.d/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     for I in ${OLIX_MODULE_UBUNTU_COLLECTD__PLUGINS}; do
         module_ubuntu_installFileConfiguration "${__PATH_CONFIG}/${I}.conf" "/etc/collectd/collectd.conf.d" \
             "Activation du plugin ${CCYAN}${I}${CVOID}"
@@ -194,7 +194,7 @@ function ubuntu_include_collectd_reset()
     if [ ${OLIX_STDIN_RETURN} == true ]; then
         logger_info "Effacement des fichiers de données RRD"
         rm -rf /var/lib/collectd/rrd/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
         echo -e "Effacement des fichiers de données RRD : ${CVERT}OK ...${CVOID}"
     fi
 }

@@ -95,7 +95,7 @@ function ubuntu_include_users_root()
     if [ ! -f /root/.ssh/id_dsa ]; then
         logger_info "Génération des clés publiques de root"
         ssh-keygen -q -t dsa -f ~/.ssh/id_dsa -N ""
-        [[ $? -ne 0 ]] && logger_error "Génération des clés publiques de root"
+        [[ $? -ne 0 ]] && logger_critical "Génération des clés publiques de root"
     fi
     return 0
 }
@@ -118,12 +118,12 @@ function ubuntu_include_users_user()
         logger_info "Modification de l'utilisateur '${UTILISATEUR}'"
         logger_debug "usermod ${USERPARAMS} ${UTILISATEUR}"
         usermod ${USERPARAMS} ${UTILISATEUR} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error "Modification de l'utilisateur '${UTILISATEUR}'"
+        [[ $? -ne 0 ]] && logger_critical "Modification de l'utilisateur '${UTILISATEUR}'"
     else
         logger_info "Création de l'utilisateur '${UTILISATEUR}'"
         logger_debug "useradd ${USERPARAMS} ${UTILISATEUR}"
         useradd ${USERPARAMS} ${UTILISATEUR} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error "Création de l'utilisateur '${UTILISATEUR}'"
+        [[ $? -ne 0 ]] && logger_critical "Création de l'utilisateur '${UTILISATEUR}'"
         echo -e "Mode de passe pour ${CCYAN}${UTILISATEUR}${CVOID}"
         passwd ${UTILISATEUR}
    fi
@@ -133,12 +133,12 @@ function ubuntu_include_users_user()
 
        logger_info "Couleur du prompt de '${UTILISATEUR}'"
        su - ${UTILISATEUR} -c "sed -i 's/\#force_color_prompt/force_color_prompt/g' ~/.bashrc" > ${OLIX_LOGGER_FILE_ERR} 2>&1
-       [[ $? -ne 0 ]] && logger_error "Couleur du prompt de '${UTILISATEUR}'"
+       [[ $? -ne 0 ]] && logger_critical "Couleur du prompt de '${UTILISATEUR}'"
        
        if [ ! -f /home/${UTILISATEUR}/.ssh/id_dsa ]; then
             logger_info "Génération de la clé publique et privée de '${UTILISATEUR}'"
             su - ${UTILISATEUR} -c "ssh-keygen -q -t dsa -f ~/.ssh/id_dsa -N ''" > ${OLIX_LOGGER_FILE_ERR} 2>&1
-            [[ $? -ne 0 ]] && logger_error "Génération de la clé publique et privée de '${UTILISATEUR}'"
+            [[ $? -ne 0 ]] && logger_critical "Génération de la clé publique et privée de '${UTILISATEUR}'"
         fi
 
     fi

@@ -95,15 +95,15 @@ ubuntu_include_install()
 
     logger_info "Installation des packages PostgreSQL"
     apt-get --yes install postgresql postgresql-contrib
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages PostgreSQL"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages PostgreSQL"
 
     # Désactivation de AppArmor
     #if [ -f /etc/apparmor.d/usr.sbin.mysqld ]; then
     #    logger_info  "Désactivation du fichier de configuration appArmor"
     #    ln -sf /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/usr.sbin.mysqld > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    #    [[ $? -ne 0 ]] && logger_error
+    #    [[ $? -ne 0 ]] && logger_critical
     #    service apparmor reload
-    #    [[ $? -ne 0 ]] && logger_error "Service APPARMOR NOT running"
+    #    [[ $? -ne 0 ]] && logger_critical "Service APPARMOR NOT running"
     #fi
 
     [[ -z ${OLIX_MODULE_UBUNTU_POSTGRES__PATH} ]] && return 0
@@ -133,7 +133,7 @@ ubuntu_include_config()
             "Mise en place de ${CCYAN}${OLIX_MODULE_UBUNTU_POSTGRES__FILECFG}${CVOID} vers /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf"
         logger_debug "chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf"
         chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/postgresql.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
     fi
     if [[ -n "${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}" ]]; then
         module_ubuntu_backupFileOriginal "/etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf"
@@ -142,7 +142,7 @@ ubuntu_include_config()
             "Mise en place de ${CCYAN}${OLIX_MODULE_UBUNTU_POSTGRES__FILEAUTH}${CVOID} vers /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf"
         logger_debug "chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf"
         chown postgres.postgres /etc/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/main/pg_hba.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
     fi
 }
 
@@ -156,7 +156,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service PostgreSQL"
     service postgresql restart
-    [[ $? -ne 0 ]] && logger_error "Service PostgreSQL NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service PostgreSQL NOT running"
 }
 
 
@@ -198,20 +198,20 @@ function ubuntu_include_postgres_path()
     if [[ -d ${POSTGRES_PATH} ]]; then
         logger_debug "rm -rf ${POSTGRES_PATH}"
         rm -rf ${POSTGRES_PATH}/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
     else
         logger_debug "mkdir -p ${POSTGRES_PATH}"
         mkdir -p ${POSTGRES_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
     fi
     logger_debug "chown -R postgres.postgres ${POSTGRES_PATH}"
     chown -R postgres:postgres ${POSTGRES_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     logger_debug "chmod 700 ${POSTGRES_PATH}"
     chmod 700 ${POSTGRES_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     logger_debug "/usr/lib/postgresql/9.3/bin/initdb -D ${POSTGRES_PATH}; exit $?"
     su - postgres --command "/usr/lib/postgresql/${MODULE_UBUNTU_POSTGRES_VERSION}/bin/initdb -D ${POSTGRES_PATH}; exit $?"
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     echo -e "Regenération de l'instance PostgreSQL : ${CVERT}OK ...${CVOID}"
 }

@@ -90,10 +90,10 @@ ubuntu_include_restart()
 
     logger_info "Arrêt de eth0"
     ifdown eth0 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     logger_info "Démarrage de eth0"
     ifup eth0 > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
 }
 
 
@@ -122,5 +122,5 @@ iface eth0 inet static
   gateway ${OLIX_MODULE_UBUNTU_NETWORK__GATEWAY}
   dns-nameservers ${OLIX_MODULE_UBUNTU_NETWORK__RESOLV}
 EOT
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
 }
