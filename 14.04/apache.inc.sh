@@ -86,7 +86,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages APACHE"
     apt-get --yes install apache2-mpm-prefork ssl-cert
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages APACHE"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages APACHE"
 }
 
 
@@ -115,7 +115,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service APACHE"
     service apache2 restart
-    [[ $? -ne 0 ]] && logger_error "Service APACHE NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service APACHE NOT running"
 }
 
 
@@ -158,7 +158,7 @@ function ubuntu_include_apache_modules()
     for I in ${OLIX_MODULE_UBUNTU_APACHE__MODULES}; do
         logger_info "Activation du module $I"
         a2enmod $I > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
         echo -e "Activation du module ${CCYAN}$I${CVOID} : ${CVERT}OK ...${CVOID}"
     done
 }
@@ -173,16 +173,16 @@ function ubuntu_include_apache_configs()
 
     logger_info "Suppression de la conf actuelle"
     rm -rf /etc/apache2/conf-enabled/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     rm -rf /etc/apache2/conf-available/olix* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     for I in $(ls ${__PATH_CONFIG}/conf/olix*); do
         module_ubuntu_installFileConfiguration "$I" "/etc/apache2/conf-available/"
     done
     for I in ${OLIX_MODULE_UBUNTU_APACHE__CONFIGS}; do
         logger_info "Activation de la conf $I"
         a2enconf $I > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
         echo -e "Activation de la conf ${CCYAN}$I${CVOID} : ${CVERT}OK ...${CVOID}"
     done
 }
@@ -204,12 +204,12 @@ function ubuntu_include_apache_default()
 
     logger_info "Effacement de /etc/apache2/sites-enabled/000-default.conf"
     rm -rf /etc/apache2/sites-enabled/000-default.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
 
     module_ubuntu_installFileConfiguration "${__PATH_CONFIG}/default/${OLIX_MODULE_UBUNTU_APACHE__DEFAULT}" "/etc/apache2/sites-available/000-default.conf"
 
     logger_info "Activation du site 000-default.conf"
     a2ensite 000-default.conf > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     echo -e "Activation du site ${CCYAN}default.conf${CVOID} : ${CVERT}OK ...${CVOID}"
 }

@@ -87,7 +87,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages POSTFIX"
     apt-get --yes install mailutils postfix libsasl2-modules sasl2-bin
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages POSTFIX"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages POSTFIX"
 }
 
 
@@ -119,7 +119,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service POSTFIX"
     service postfix restart
-    [[ $? -ne 0 ]] && logger_error "Service POSTFIX NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service POSTFIX NOT running"
 }
 
 
@@ -147,7 +147,7 @@ function ubuntu_include_postfix_authentification()
     echo "${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}    ${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__LOGIN}:${OLIX_MODULE_UBUNTU_POSTFIX__AUTH__PASSWORD}" > /etc/postfix/sasl_passwd
     logger_debug "postmap /etc/postfix/sasl_passwd"
     postmap /etc/postfix/sasl_passwd > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     rm -f /etc/postfix/sasl_passwd
     echo -e "Authentification sur ${CCYAN}${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__HOST}:${OLIX_MODULE_UBUNTU_POSTFIX__RELAY__PORT}${CVOID} : ${CVERT}OK ...${CVOID}"
 }

@@ -93,15 +93,15 @@ ubuntu_include_install()
 
     logger_info "Installation des packages MYSQL"
     apt-get --yes install mysql-server
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages MYSQL"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages MYSQL"
 
     # Désactivation de AppArmor
     if [ -f /etc/apparmor.d/usr.sbin.mysqld ]; then
         logger_info  "Désactivation du fichier de configuration appArmor"
         ln -sf /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/usr.sbin.mysqld > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
         service apparmor reload
-        [[ $? -ne 0 ]] && logger_error "Service APPARMOR NOT running"
+        [[ $? -ne 0 ]] && logger_critical "Service APPARMOR NOT running"
     fi
 
     [[ -z ${OLIX_MODULE_UBUNTU_MYSQL__PATH} ]] && return 0
@@ -151,7 +151,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service MYSQL"
     service mysql restart
-    [[ $? -ne 0 ]] && logger_error "Service MYSQL NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service MYSQL NOT running"
 }
 
 
@@ -191,18 +191,18 @@ function ubuntu_include_mysql_path()
     if [[ -d ${MYSQL_PATH} ]]; then
         logger_debug "rm -rf ${MYSQL_PATH}"
         rm -rf ${MYSQL_PATH}/* > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
     else
         logger_debug "mkdir -p ${MYSQL_PATH}"
         mkdir -p ${MYSQL_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
     fi
     logger_debug "chown -R mysql.mysql ${MYSQL_PATH}"
     chown -R mysql:mysql ${MYSQL_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     logger_debug "cp -rp /var/lib/mysql/ ${MYSQL_PATH}"
     cp -rp /var/lib/mysql/* ${MYSQL_PATH} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     echo -e "Regenération de l'instance MySQL : ${CVERT}OK ...${CVOID}"
     service mysql start
 }
@@ -217,9 +217,9 @@ function ubuntu_include_mysql_script()
     local SCRIPT=${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_MYSQL__SCRIPT}
 
     logger_info "Execution du script ${OLIX_MODULE_UBUNTU_MYSQL__SCRIPT}"
-    [[ ! -f ${SCRIPT} ]] && logger_error "Le fichier ${SCRIPT} n'existe pas"
+    [[ ! -f ${SCRIPT} ]] && logger_critical "Le fichier ${SCRIPT} n'existe pas"
     cat ${SCRIPT} | mysql --user=root --password=${MYSQL_PASSWORD} > ${OLIX_LOGGER_FILE_ERR} 2>&1
-    [[ $? -ne 0 ]] && logger_error
+    [[ $? -ne 0 ]] && logger_critical
     echo -e "Execution du script SQL : ${CVERT}OK ...${CVOID}"
 }
 
@@ -247,12 +247,12 @@ function ubuntu_include_mysql_users()
             logger_debug "CREATE USER ${USERNAME} IDENTIFIED BY '????'"
             mysql --user=root --password=${MYSQL_PASSWORD} \
                 --execute="CREATE USER ${USERNAME} IDENTIFIED BY '${OLIX_STDIN_RETURN}'" > ${OLIX_LOGGER_FILE_ERR} 2>&1
-            [[ $? -ne 0 ]] && logger_error
+            [[ $? -ne 0 ]] && logger_critical
         fi
 
         logger_debug "'${USERGRANT}'"
         mysql --user=root --password=${MYSQL_PASSWORD} --execute="${USERGRANT}" > ${OLIX_LOGGER_FILE_ERR} 2>&1
-        [[ $? -ne 0 ]] && logger_error
+        [[ $? -ne 0 ]] && logger_critical
 
         echo -e "Privilèges de l'utilisateur ${CCYAN}${USERNAME}${CVOID} : ${CVERT}OK ...${CVOID}"
     done

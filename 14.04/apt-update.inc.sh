@@ -26,9 +26,9 @@ ubuntu_include_main()
 {
     logger_info "Mise à jour des dépôts"
     apt-get update
-    [[ $? -ne 0 ]] && logger_error "Update des dépôts"
+    [[ $? -ne 0 ]] && logger_critical "Update des dépôts"
 
     logger_info "Mise à jour des packages"
     apt-get --yes upgrade
-    [[ $? -ne 0 ]] && logger_error "Update des packages"
+    [[ $? -ne 0 ]] && logger_critical "Update des packages"
 }

@@ -54,7 +54,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages necessaires à VMware"
     apt-get --yes install dkms build-essential linux-headers-$(uname -r)
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer tous les packages"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer tous les packages"
 
     umount /dev/cdrom
     echo -en "${CBLANC}Activer l'installation de VMware Tools depuis le menu ${CJAUNE}[ENTER pour continuer] ?${CVOID} "

@@ -83,7 +83,7 @@ ubuntu_include_install()
 
     logger_info "Installation des packages PHP"
     apt-get --yes install libapache2-mod-php5 php5 ${OLIX_MODULE_UBUNTU_PHP__MODULES}
-    [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages PHP"
+    [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages PHP"
 }
 
 
@@ -109,7 +109,7 @@ ubuntu_include_restart()
 
     logger_info "Redémarrage du service APACHE"
     service apache2 restart
-    [[ $? -ne 0 ]] && logger_error "Service APACHE NOT running"
+    [[ $? -ne 0 ]] && logger_critical "Service APACHE NOT running"
 }
 
 

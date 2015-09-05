@@ -75,7 +75,7 @@ ubuntu_include_install()
     if [[ -n ${OLIX_MODULE_UBUNTU_TOOLS__APT} ]]; then
         logger_info "Installation des packages additionnels"
         apt-get --yes install ${OLIX_MODULE_UBUNTU_TOOLS__APT}
-        [[ $? -ne 0 ]] && logger_error "Impossible d'installer les packages additionnels"
+        [[ $? -ne 0 ]] && logger_critical "Impossible d'installer les packages additionnels"
     fi
 }
 
@@ -108,8 +108,8 @@ ubuntu_include_savecfg()
 {
     logger_debug "ubuntu_include_savecfg (tools)"
 
-    module_ubuntu_backupFileConfiguration "/etc/cron.d/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}"
-    module_ubuntu_backupFileConfiguration "/etc/logrotate.d/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}"
+    [[ -n "${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" ]] && module_ubuntu_backupFileConfiguration "/etc/cron.d/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}"
+    [[ -n "${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}" ]] && module_ubuntu_backupFileConfiguration "/etc/logrotate.d/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}" "${__PATH_CONFIG}/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}"
 }
 
 
@@ -121,6 +121,6 @@ ubuntu_include_synccfg()
     logger_debug "ubuntu_include_synccfg (tools)"
 
     echo "tools"
-    echo "tools/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}"
-    echo "tools/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}"
+    [[ -n "${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}" ]] && echo "postgres/${OLIX_MODULE_UBUNTU_TOOLS__CRONTAB}"
+    [[ -n "${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}" ]] && echo "postgres/${OLIX_MODULE_UBUNTU_TOOLS__LOGROTATE}"
 }
