@@ -20,7 +20,7 @@ function module_ubuntu_action_init()
     if [[ ! -f ${FILECONF} ]]; then
         echo -e "${CJAUNE}Avant l'initialisation, il faut que la configuration du serveur soit présente${CVOID}"
         echo -e " 1. Installer les fichiers de configuration"
-        echo -e "        via la commande ${Ccyan}olixsh ubuntu synccfg pull [ADDRESS] [DESTINATION]${CVOID}"
+        echo -e "        via la commande ${Ccyan}olixsh ubuntu synccfg pull <user>@<host>:/<path> <destination>${CVOID}"
         echo -e " 2. Initialiser le module"
         echo -e "        avec la commande ${Ccyan}olixsh ubuntu init${CVOID}"
         stdin_readYesOrNo "Continuer l'initialisation du module" false
